@@ -15,7 +15,7 @@ def create_meetup():
     meetupdata = request.get_json()
 
     if not meetupdata:
-        return jsonify({"message": "cannot be empty"})
+        return jsonify({"status": 400, "message": "cannot be empty"})
     topic = meetupdata.get('topic')
     summary = meetupdata.get('summary')
     host = meetupdata.get('host')
