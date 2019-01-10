@@ -5,7 +5,7 @@ from flask import Flask, request, Blueprint, jsonify, make_response
 
 from ..models import meetups_model
 
-meetupbp = Blueprint('meetupbp', __name__, url_prefix='api/v1')
+meetupbp = Blueprint('meetupbp', __name__, url_prefix='/api/v1')
 
 
 @meetupbp.route('/create_meetup', methods=['POST'])
