@@ -1,13 +1,18 @@
 language: python
+
 python:
   - "3.6"
+
 install:
-  - pip install pytest
-  - pip install pytest-cov
-  - pip install coveralls
   - pip install -r requirements.txt
+  - pip install coveralls codecov
+
 script:
   - export FLASK_ENV=development
-  - pytest --cov=app
+  - pytest --cov=app/tests/v1
+
 after_success:
   - coveralls
+  - codecov --84aa3009-9723-47c4-b8f1-2e11cc7a6563
+
+cache: pip
