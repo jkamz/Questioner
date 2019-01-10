@@ -42,6 +42,4 @@ def get_meetup(meetupId):
         }))
 
     return make_response(jsonify({
-        "status": 404,
-        "message": "meetup not found"
-    }))
+        "message": "meetup not found"}), 404)

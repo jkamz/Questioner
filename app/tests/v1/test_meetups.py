@@ -54,3 +54,10 @@ class MeetupTest(unittest.TestCase):
         get_res_data = json.loads(get_res.data.decode())
         self.assertEqual(get_res.status_code, 200)
         self.assertEqual(get_res_data["meetup"][1]["message"], "success")
+
+    def test_non_existent_meetup(self):
+        '''test when the given meetup id is non existent'''
+        get_res = self.client.get("api/v1/meetups/353")
+        get_res_data = json.loads(get_res.data.decode())
+        self.assertEqual(get_res.status_code, 404)
+        self.assertEqual(get_res_data["message"], "meetup not found")
