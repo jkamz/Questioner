@@ -29,7 +29,7 @@ def create_meetup():
     return jsonify({"status": 200, "data": new_meetup})
 
 
-@meetupbp.route('/meetup/<meetupId>')
+@meetupbp.route('/meetups/<meetupId>')
 def get_meetup(meetupId):
     '''
     endpoint for getting one specific meetup
