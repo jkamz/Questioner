@@ -10,6 +10,7 @@ env:
 before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
 
 install:
   - pip install -r requirements.txt
@@ -17,10 +18,14 @@ install:
 
 script:
   - export FLASK_ENV=development
-  - pytest --cov=app/tests/v1
+  - py.test --cov-report term --cov=app/tests/v1
+
+after_script:
+  - coverage xml
+  - if [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi
 
 after_success:
   - coveralls
-  - codecov --84aa3009-9723-47c4-b8f1-2e11cc7a6563
+  - codecov
 
 cache: pip
