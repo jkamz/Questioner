@@ -61,3 +61,10 @@ class MeetupTest(unittest.TestCase):
         get_res_data = json.loads(get_res.data.decode())
         self.assertEqual(get_res.status_code, 404)
         self.assertEqual(get_res_data["message"], "meetup not found")
+
+    def test_get_all_meetups(self):
+        '''test the endpoint for getting all meetups'''
+        res = self.client.get("api/v1/meetups")
+        res_data = json.loads(res.data.decode())
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(res_data["message"], "success")
