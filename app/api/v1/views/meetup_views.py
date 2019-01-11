@@ -29,7 +29,7 @@ def create_meetup():
     return jsonify({"status": 200, "data": new_meetup})
 
 
-@meetupbp.route('/meetup/<meetupId>')
+@meetupbp.route('/meetups/<meetupId>')
 def get_meetup(meetupId):
     '''
     endpoint for getting one specific meetup
@@ -42,6 +42,4 @@ def get_meetup(meetupId):
         }))
 
     return make_response(jsonify({
-        "status": 404,
-        "message": "meetup not found"
-    }))
+        "message": "meetup not found"}), 404)
