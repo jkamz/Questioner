@@ -25,7 +25,7 @@ GET  | /api/v1/meetup/<int:meetup_id>/<int:question_id> | Get a specific questio
 GET  | /api/v1/meetup/<int:meetup_id>/questions> | Get all questions for a specific meetup.   |
 PUT | /api/v1/questions/<int:question_id>/upvote | Adds votes by one |
 PUT | /api/v1/questions/<int:question_id>/downvote | Decreases votes by one  |
-POST | /api/v1/meetups/<int:meetup_id>/create_rsvps | Create a RSVP for a specific meetup
+POST | /api/v1/meetups/<int:meetup_id>/rsvps | Create a RSVP for a specific meetup
 
 
 
