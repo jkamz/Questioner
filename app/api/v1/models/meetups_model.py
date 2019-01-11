@@ -51,3 +51,7 @@ class Meetup():
         for meetup in meetups:
             if meetup['meetupId'] == meetupId:
                 return meetup, {"message": "success"}
+
+    def allMeetups(self):
+        '''method for getting all meetup records'''
+        return meetups
