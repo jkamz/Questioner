@@ -43,3 +43,16 @@ def get_meetup(meetupId):
 
     return make_response(jsonify({
         "message": "meetup not found"}), 404)
+
+
+@meetupbp.route("/meetups")
+def get_meetups():
+    '''
+     endpoint for getting all meetups
+    '''
+
+    meetups = meetups_model.Meetup().allMeetups()
+    return make_response(jsonify({
+        "message": "success",
+        "meetups": meetups
+    }), 200)
