@@ -39,8 +39,11 @@ POST | /api/v1/meetups/<int:meetup_id>/rsvps | Create a RSVP for a specific meet
 To test the API on your local machine, start by cloning the Repository and navigating to the root folder
 
 `git clone https://github.com/jkamz/Questioner`
+
 `cd Questioner` to navigate to the root folder
+
 `git checkout develop` to navigate to the develop branch
+
 
 ### Prerequisites
 - python 3.6
@@ -65,6 +68,7 @@ Run
 #### Postman
 
 Run `flask run`
+
 Test the defined endpoints in postman
 
 ## Acknowledgments
