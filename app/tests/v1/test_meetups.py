@@ -29,7 +29,7 @@ class MeetupTest(unittest.TestCase):
 
         self.rsvp = {
             "userId": "1",
-            "attendance": "yes"
+            "response": "yes"
         }
 
     def test_create_meetup(self):
@@ -72,8 +72,8 @@ class MeetupTest(unittest.TestCase):
 
     def test_meetup_rsvp(self):
         '''test the endpoint for meetup rsvp'''
-        res = self.client.post("api/v1/meetups/1/rsvp", data=json.dumps(self.rsvp),
+        res = self.client.post("api/v1/meetups/1/rsvps", data=json.dumps(self.rsvp),
                                content_type='application/json')
         res_data = json.loads(res.data.decode())
         self.assertEqual(res.status_code, 200)
-        self.assertIn("attendance confirmed", str(res_data))
+        self.assertIn("attendance status confirmed", str(res_data))
