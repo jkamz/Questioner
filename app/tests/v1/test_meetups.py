@@ -25,10 +25,14 @@ class MeetupTest(unittest.TestCase):
             "topic": "python"
         }
 
+        self.meetup1 = {}
+
         self.rsvp = {
             "userId": "1",
             "response": "yes"
         }
+
+        self.rsvp1 = {}
 
     def test_create_meetup(self):
         '''test the endpoint of creating new meetup'''
@@ -39,6 +43,16 @@ class MeetupTest(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertTrue(response_data["data"])
         self.assertIn("Meetup created successfully", str(response_data))
+
+    def test_create_invalid_meetup(self):
+        '''test the endpoint of creating a new meetup record invalidly'''
+
+        res = self.client.post("api/v1/create_meetup", data=json.dumps(self.meetup1),
+                               content_type="application/json")
+
+        response_data = json.loads(res.data.decode())
+        self.assertEqual(res.status_code, 400)
+        self.assertIn("expects only Application/JSON data", str(response_data))
 
     def test_get_one_meetup(self):
         '''test the endpoint for getting one meetup'''
@@ -75,3 +89,13 @@ class MeetupTest(unittest.TestCase):
         res_data = json.loads(res.data.decode())
         self.assertEqual(res.status_code, 200)
         self.assertIn("attendance status confirmed", str(res_data))
+
+    def test_create_invalid_rsvp(self):
+        '''test the endpoint of creating an rsvp invalidly'''
+
+        res = self.client.post("api/v1/meetups/1/rsvps", data=json.dumps(self.rsvp1),
+                               content_type="application/json")
+
+        response_data = json.loads(res.data.decode())
+        self.assertEqual(res.status_code, 400)
+        self.assertIn("expects only Application/JSON data", str(response_data))

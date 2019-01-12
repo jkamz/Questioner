@@ -22,10 +22,10 @@ def create_meetup():
     host = meetupdata.get('host')
     location = meetupdata.get('location')
     occuring_on = meetupdata.get('occuring_on')
-    created_on = meetupdata.get('created_on')
     tags = meetupdata.get('tags')
 
-    new_meetup = meetups_model.Meetup(occuring_on, host, topic, summary, tags, location).createMeetup()
+    new_meetup = meetups_model.Meetup(occuring_on, host, topic, summary,
+                                      tags, location).createMeetup()
 
     return jsonify({"status": 201, "data": new_meetup})
 
@@ -42,8 +42,7 @@ def get_meetup(meetupId):
             "meetup": meetup
         }))
 
-    return make_response(jsonify({
-        "message": "meetup not found"}), 404)
+    return make_response(jsonify({"message": "meetup not found"}), 404)
 
 
 @meetupbp.route("/meetups")
