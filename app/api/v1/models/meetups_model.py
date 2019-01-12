@@ -18,7 +18,7 @@ class Meetup():
         initialize class
         '''
         self.meetupId = str(len(meetups) + 1)
-        self.created_on = datetime.now()
+        self.created_on = datetime.now().strftime("%H:%M%P %A %d %B %Y")
         self.occuring_on = occuring_on
         self.host = host
         self.topic = topic
