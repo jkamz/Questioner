@@ -1,7 +1,7 @@
 """
 Create views for all questions endpoints
 """
-from flask import request, Blueprint, jsonify, make_response
+from flask import request, Blueprint, jsonify
 
 from ..models import questions_models
 
@@ -28,7 +28,7 @@ def create_question(meetupId):
     return jsonify({"status": 201, "data": new_question}), 201
 
 
-@questionbp.route('/questions/<int:questionId>/upvote', methods=["POST"])
+@questionbp.route('/questions/<int:questionId>/upvote', methods=["PATCH"])
 def upvote_question(questionId):
     '''
     endpoint for upvoting a question
@@ -36,15 +36,21 @@ def upvote_question(questionId):
 
     upvote = questions_models.Questions().upvoteQuestion(questionId)
 
-    return jsonify({"status": 200, "data": upvote})
+    if upvote:
+        return jsonify({"status": 200, "data": upvote}), 200
+
+    return jsonify({"status": 404, "messsage": "upvote not successful"}), 404
 
 
-@questionbp.route('/questions/<int:questionId>/downvote', methods=["POST"])
+@questionbp.route('/questions/<int:questionId>/downvote', methods=["PATCH"])
 def downvote_question(questionId):
     '''
-    endpoint for upvoting a question
+    endpoint for downvoting a question
     '''
 
     downvote = questions_models.Questions().downvoteQuestion(questionId)
 
-    return jsonify({"status": 200, "data": downvote})
+    if downvote:
+        return jsonify({"status": 200, "data": downvote}), 200
+
+    return jsonify({"status": 404, "messsage": "downvote not successful"}), 404
