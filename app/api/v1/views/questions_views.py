@@ -26,3 +26,14 @@ def create_question(meetupId):
     new_question = questions_models.Questions(meetupId).createQuestion(title, body, author)
 
     return jsonify({"status": 201, "data": new_question}), 201
+
+
+@questionbp.route('/questions/<int:questionId>/upvote', methods=["POST"])
+def upvote_question(questionId):
+    '''
+    endpoint for upvoting a question
+    '''
+
+    upvote = questions_models.Questions().upvoteQuestion(questionId)
+
+    return jsonify({"status": 200, "data": upvote})
