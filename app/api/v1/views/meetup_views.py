@@ -1,7 +1,7 @@
 """
 Create views for all meetup endpoints
 """
-from flask import Flask, request, Blueprint, jsonify, make_response
+from flask import request, Blueprint, jsonify, make_response
 
 from ..models import meetups_model
 
@@ -27,7 +27,7 @@ def create_meetup():
 
     new_meetup = meetups_model.Meetup(occuring_on, host, topic, summary, tags, location).createMeetup()
 
-    return jsonify({"status": 200, "data": new_meetup})
+    return jsonify({"status": 201, "data": new_meetup})
 
 
 @meetupbp.route('/meetups/<meetupId>')
