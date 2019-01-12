@@ -35,3 +35,14 @@ class Questions():
 
         questions.append(question)
         return question
+
+    def upvoteQuestion(self, id):
+        '''
+        Method for upvoting a question
+        '''
+        question = [question for question in questions if question["question_id"] == id]
+
+        if question:
+            question[0]["votes"] += 1
+
+            return question
