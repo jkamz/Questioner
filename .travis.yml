@@ -18,7 +18,7 @@ install:
 
 script:
   - export FLASK_ENV=development
-  - py.test --cov-report term --cov=app/tests/v1
+  - py.test --cov-report term --cov=app/
 
 after_script:
   - coverage xml
