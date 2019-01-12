@@ -12,7 +12,7 @@ class Questions():
    define all questions attributes and methods
     """
 
-    def __init__(self, meetup_id):
+    def __init__(self, meetup_id=None):
         """
         initialize Questions class
         """
@@ -35,3 +35,31 @@ class Questions():
 
         questions.append(question)
         return question
+
+    @staticmethod
+    def upvoteQuestion(questionId):
+        '''
+        Method for upvoting a question
+        '''
+        question = [question for question in questions if question["question_id"] == questionId]
+
+        if question:
+            question[0]["votes"] += 1
+
+            return question, {"message": "upvote successfull"}
+
+        return None
+
+    @staticmethod
+    def downvoteQuestion(questionId):
+        '''
+        Method for upvoting a question
+        '''
+        question = [question for question in questions if question["question_id"] == questionId]
+
+        if question:
+            question[0]["votes"] -= 1
+
+            return question, {"message": "downvote successfull"}
+
+        return None
