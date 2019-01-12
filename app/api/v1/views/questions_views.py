@@ -37,3 +37,14 @@ def upvote_question(questionId):
     upvote = questions_models.Questions().upvoteQuestion(questionId)
 
     return jsonify({"status": 200, "data": upvote})
+
+
+@questionbp.route('/questions/<int:questionId>/downvote', methods=["POST"])
+def downvote_question(questionId):
+    '''
+    endpoint for upvoting a question
+    '''
+
+    downvote = questions_models.Questions().downvoteQuestion(questionId)
+
+    return jsonify({"status": 200, "data": downvote})
