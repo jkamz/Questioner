@@ -17,15 +17,15 @@ class Questions():
         initialize Questions class
         """
         self.meetup_id = meetup_id
-        self.created_on = datetime.now()
+        self.created_on = datetime.now().strftime("%H:%M%P %A %d %B %Y")
 
-    def createQuestion(self, meetup_id, title, body, author):
+    def createQuestion(self, title, body, author):
         '''
         Method for creating a new question record
         '''
         question = {
             "question_id": len(questions) + 1,
-            "meetup_id": meetup_id,
+            "meetup_id": self.meetup_id,
             "title": title,
             "body": body,
             "author": author,
