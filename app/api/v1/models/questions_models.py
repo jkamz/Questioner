@@ -46,3 +46,17 @@ class Questions():
             question[0]["votes"] += 1
 
             return question
+
+    @staticmethod
+    def downvoteQuestion(questionId):
+        '''
+        Method for upvoting a question
+        '''
+        question = [question for question in questions if question["question_id"] == questionId]
+
+        if question:
+            question[0]["votes"] -= 1
+
+            return question, {"message": "downvote successfull"}
+
+        return {"message": "downvote unsuccessfull"}
