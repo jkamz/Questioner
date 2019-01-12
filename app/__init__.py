@@ -4,6 +4,7 @@ import os
 from flask import Flask
 from instance.config import app_config
 from .api.v1.views.meetup_views import meetupbp
+from .api.v1.views.questions_views import questionbp
 
 
 def create_app(config_name):
@@ -15,5 +16,6 @@ def create_app(config_name):
     app.secret_key = os.getenv("SECRET")
 
     app.register_blueprint(meetupbp)
+    app.register_blueprint(questionbp)
 
     return app
