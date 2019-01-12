@@ -17,10 +17,8 @@ class MeetupTest(unittest.TestCase):
         self.app_context = self.app
 
         self.meetup = {
-            "created_on": "Thu, 10 Jan 2019 18:17:59 GMT",
             "host": "jkamz",
             "location": "Nairobi",
-            "meetupId": "1",
             "occuring_on": "28th Jan",
             "summary": "Getting to know python",
             "tags": "python pythonista flask",
