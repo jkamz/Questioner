@@ -5,6 +5,7 @@ from flask import Flask
 from instance.config import app_config
 from .api.v1.views.meetup_views import meetupbp
 from .api.v1.views.questions_views import questionbp
+from .api.v1.views.user_views import userbp
 
 
 def create_app(config_name):
@@ -17,5 +18,6 @@ def create_app(config_name):
 
     app.register_blueprint(meetupbp)
     app.register_blueprint(questionbp)
+    app.register_blueprint(userbp)
 
     return app
