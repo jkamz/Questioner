@@ -31,7 +31,7 @@ PATCH | /api/v1/questions/<int:question_id>/upvote | Adds votes by one |
 PUT | /api/v1/questions/<int:question_id>/downvote | Decreases votes by one  |
 POST | /api/v1/meetups/<int:meetup_id>/rsvps | Create a RSVP for a specific meetup
 POST  | /api/v1/signup  | create a new user |
-POST  | /api/v1/signup  | login user into the system |
+POST  | /api/v1/signin  | login user into the system |
 
 
 ## Getting Started
