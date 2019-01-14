@@ -25,13 +25,13 @@ Required Method       | EndPoint       | Functionality |
 POST  | /api/v1/create_meetup  | Post a new meetup record   |
 GET  | /api/v1/meetups/<int:meetup_id>  | Get a specific meetup   |
 GET  | /api/v1/meetups/   | Get all meetup records   |
-POST  | /api/v1/meetup/<int:meetup_id>/question | Create a question for a specific meetup.   |
-GET  | /api/v1/meetup/<int:meetup_id>/<int:question_id> | Get a specific question for a specific meetup.   |
-GET  | /api/v1/meetup/<int:meetup_id>/questions> | Get all questions for a specific meetup.   |
-PUT | /api/v1/questions/<int:question_id>/upvote | Adds votes by one |
+POST  | /api/v1/meetups/<int:meetup_id>/questions | Create a question for a specific meetup.
+GET  | /api/v1/meetups/<int:meetup_id>/questions | Get all questions for a specific meetup.
+PATCH | /api/v1/questions/<int:question_id>/upvote | Adds votes by one |
 PUT | /api/v1/questions/<int:question_id>/downvote | Decreases votes by one  |
 POST | /api/v1/meetups/<int:meetup_id>/rsvps | Create a RSVP for a specific meetup
-
+POST  | /api/v1/signup  | create a new user |
+POST  | /api/v1/signup  | login user into the system |
 
 
 ## Getting Started
