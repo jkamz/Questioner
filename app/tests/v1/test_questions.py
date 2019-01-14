@@ -1,5 +1,5 @@
 """
-Tests for meetups operations
+Tests for questions operations
 """
 
 import unittest
@@ -8,7 +8,7 @@ from ... import create_app
 
 
 class QuestionTest(unittest.TestCase):
-    """class representing the meetups test case"""
+    """class representing the questions test case"""
 
     def setUp(self):
         '''initialize the app and define test variable'''
