@@ -24,6 +24,13 @@ def create_meetup():
     occuring_on = meetupdata.get('occuring_on')
     tags = meetupdata.get('tags')
 
+    req_fields = {"topic": topic, "location": location, "occuring_on": occuring_on}
+
+    # check if all required values are present
+    for key, value in req_fields.items():
+        if not value.strip():
+            return make_response(jsonify({"status": 400, "error": f"{key} cannot be empty"})), 400
+
     new_meetup = meetups_model.Meetup(occuring_on, host, topic, summary,
                                       tags, location).createMeetup()
 
