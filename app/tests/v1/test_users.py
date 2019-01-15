@@ -19,11 +19,9 @@ class UserTest(unittest.TestCase):
         self.user = {
             "firstname": "andela",
             "lastname": "bootcamp",
-            "othername": "pac",
             "email": "andela.pac@pac.com",
-            "phoneNumber": "070021312131",
             "username": "andech",
-            "isAdmin": "yes",
+            "isAdmin": True,
             "password": "jkamz"
         }
 
@@ -57,6 +55,11 @@ class UserTest(unittest.TestCase):
 
     def test_user_sign_in(self):
         '''test endpoint for user sign in'''
+        # first signup user
+        res = self.client.post("api/v1/signup", data=json.dumps(self.user),
+                               content_type="application/json")
+
+        # sign in
         res = self.client.post("api/v1/signin", data=json.dumps(self.userlogin),
                                content_type="application/json")
 
