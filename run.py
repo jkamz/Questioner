@@ -4,7 +4,7 @@ import os
 
 from app import create_app
 
-config_name = os.getenv('APP_SETTINGS') or 'default'
+config_name = os.getenv('FLASK_ENV') or 'development'
 
 app = create_app(config_name)
 
