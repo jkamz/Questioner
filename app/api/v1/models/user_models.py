@@ -17,7 +17,7 @@ class User():
         Initialize class
         '''
 
-    def signUp(self, firstname, lastname, username, email, password, isAdmin=0):
+    def signUp(self, firstname, lastname, username, email, password, isAdmin):
         '''
         Method for user sign up
         '''
