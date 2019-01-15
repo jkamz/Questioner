@@ -51,6 +51,12 @@ def sign_up():
                 "message": "username not available"
             })), 400
 
+        if not validator.validate_password_strength(password):
+            return make_response(jsonify({
+                "status": 400,
+                "message": "invalid password. Ensure password is at least 8 characters long and has at least one uppercase letter, lowercase letter, a number, and a special character"
+            })), 400
+
         new_user = User().signUp(firstname, lastname, username, email, password, isAdmin)
 
         return jsonify({"status": 201, "data": new_user}), 201

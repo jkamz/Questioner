@@ -33,3 +33,7 @@ class Validators():
             return True
 
         return False
+
+    def validate_password_strength(self, password):
+
+        return re.match(r'[A-Za-z0-9@#$%^&+=]{8,}', password)
