@@ -17,7 +17,7 @@ class User():
         Initialize class
         '''
 
-    def signUp(self, firstname, lastname, othername, username, email, password, isAdmin, phoneNumber):
+    def signUp(self, firstname, lastname, username, email, password, isAdmin=0):
         '''
         Method for user sign up
         '''
@@ -25,9 +25,7 @@ class User():
             "id": len(users) + 1,
             "firstname": firstname,
             "lastname": lastname,
-            "othername": othername,
             "email": email,
-            "phoneNumber": phoneNumber,
             "username": username,
             "registered": datetime.now().strftime("%H:%M%P %A %d %B %Y"),
             "isAdmin": isAdmin,

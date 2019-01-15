@@ -16,14 +16,12 @@ def sign_up():
     if user_data:
         firstname = user_data.get('firstname')
         lastname = user_data.get('lastname')
-        othername = user_data.get('othername')
         isAdmin = user_data.get('isAdmin')
         email = user_data.get('email')
         username = user_data.get('username')
         password = user_data.get('password')
-        phoneNumber = user_data.get('phoneNumber')
 
-        new_user = user_models.User().signUp(firstname, lastname, othername, username, email, password, isAdmin, phoneNumber)
+        new_user = user_models.User().signUp(firstname, lastname, username, email, password, isAdmin)
 
         return jsonify({"status": 201, "data": new_user}), 201
 
