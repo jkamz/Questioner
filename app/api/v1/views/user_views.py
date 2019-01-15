@@ -1,11 +1,13 @@
 """
 Create views for all user endpoints
 """
-from flask import request, Blueprint, jsonify
+from flask import request, Blueprint, jsonify, make_response
 
-from ..models import user_models
+from ..models.user_models import User
+from ..utils.validators import Validators
 
 userbp = Blueprint('userbp', __name__, url_prefix='/api/v1')
+validator = Validators()
 
 
 @userbp.route('/signup', methods=['POST'])
@@ -21,7 +23,35 @@ def sign_up():
         username = user_data.get('username')
         password = user_data.get('password')
 
-        new_user = user_models.User().signUp(firstname, lastname, username, email, password, isAdmin)
+        req_fields = {"firstname": firstname, "lastname": lastname, "username": username, "email": email, "password": password}
+
+        # check if all required values are present
+        for key, value in req_fields.items():
+            if not value.strip():
+                return make_response(jsonify({"status": 400, "error": f"{key} cannot be empty"})), 400
+
+        # check if email is valid
+        if not validator.validate_email(email):
+            return make_response(jsonify({
+                "status": 400,
+                "message": "invalid email"
+            })), 400
+
+        # check if email is already registered
+        if validator.validate_unique_email(email):
+            return make_response(jsonify({
+                "status": 400,
+                "message": "email already registered"
+            })), 400
+
+        # check if username is available
+        if validator.validate_unique_username(username):
+            return make_response(jsonify({
+                "status": 400,
+                "message": "username not available"
+            })), 400
+
+        new_user = User().signUp(firstname, lastname, username, email, password, isAdmin)
 
         return jsonify({"status": 201, "data": new_user}), 201
 
@@ -39,7 +69,7 @@ def sign_in():
         password = user_data.get('password')
         isAdmin = user_data.get('isAdmin')
 
-        user = user_models.User().signIn(username, password, isAdmin)
+        user = User().signIn(username, password, isAdmin)
         return jsonify({"status": 200, "data": user}), 200
 
     return jsonify({"status": 400, "message": "expects only Application/JSON data"}), 400
