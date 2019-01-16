@@ -5,7 +5,9 @@ from flask import request, Blueprint, jsonify, make_response
 
 from ..models.user_models import User
 from ..utils.validators import Validators
+from ..utils.schemas import UsersSchema
 
+user_schema = UsersSchema()
 userbp = Blueprint('userbp', __name__, url_prefix='/api/v1')
 validator = Validators()
 
@@ -15,13 +17,22 @@ def sign_up():
     '''endpoint for adding a user
     '''
     user_data = request.get_json()
-    if user_data:
-        firstname = user_data.get('firstname')
-        lastname = user_data.get('lastname')
-        isAdmin = user_data.get('isAdmin')
-        email = user_data.get('email')
-        username = user_data.get('username')
-        password = user_data.get('password')
+    if not user_data:
+
+        return jsonify({"status": 400, "message": "expects only Application/JSON data"}), 400
+
+    firstname = user_data.get('firstname')
+    lastname = user_data.get('lastname')
+    isAdmin = user_data.get('isAdmin')
+    email = user_data.get('email')
+    username = user_data.get('username')
+    password = user_data.get('password')
+
+    # validate data types and required fields using marshmallow
+    data, errors = user_schema.load(user_data)
+    if errors:
+        return make_response(jsonify({"status": 400, "errors": errors})), 400
+    else:
 
         req_fields = {"firstname": firstname, "lastname": lastname, "username": username, "email": email, "password": password}
 
@@ -31,11 +42,11 @@ def sign_up():
                 return make_response(jsonify({"status": 400, "error": f"{key} cannot be empty"})), 400
 
         # check if email is valid
-        if not validator.validate_email(email):
-            return make_response(jsonify({
-                "status": 400,
-                "message": "invalid email"
-            })), 400
+        # if not validator.validate_email(email):
+        #     return make_response(jsonify({
+        #         "status": 400,
+        #         "message": "invalid email"
+        #     })), 400
 
         # check if email is already registered
         if validator.validate_unique_email(email):
@@ -60,8 +71,6 @@ def sign_up():
         new_user = User().signUp(firstname, lastname, username, email, password, isAdmin)
 
         return jsonify({"status": 201, "data": new_user}), 201
-
-    return jsonify({"status": 400, "message": "expects only Application/JSON data"}), 400
 
 
 @userbp.route('/signin', methods=['POST'])
