@@ -19,7 +19,7 @@ class MeetupTest(unittest.TestCase):
         self.meetup = {
             "host": "jkamz",
             "location": "Nairobi",
-            "happeningOn": "28th Jan",
+            "happeningOn": "2019-01-16 19:00",
             "summary": "Getting to know python",
             "tags": "python pythonista flask",
             "topic": "python"
