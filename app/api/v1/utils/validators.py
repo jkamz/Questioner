@@ -1,8 +1,11 @@
-import re
-from ..models.user_models import users
+
 """
 Add base validations
 """
+
+import re
+from datetime import datetime
+from ..models.user_models import users
 
 
 class Validators():
@@ -37,3 +40,10 @@ class Validators():
     def validate_password_strength(self, password):
 
         return re.match(r'[A-Za-z0-9@#$%^&+=]{8,}', password)
+
+    def validate_meetup_date(self, happeningOn):
+
+        created_on = datetime.now().strftime("%H:%M%P %A %d %B %Y")
+        if happeningOn < created_on:
+            return True
+        return False
