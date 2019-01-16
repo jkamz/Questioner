@@ -27,7 +27,7 @@ class User():
             "lastname": lastname,
             "email": email,
             "username": username,
-            "registered": datetime.now().strftime("%H:%M%P %A %d %B %Y"),
+            "registered": datetime.now().strftime("%Y-%m-%d %H:%M"),
             "isAdmin": isAdmin,
             "password": password
         }
