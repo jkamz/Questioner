@@ -5,7 +5,10 @@ from flask import request, Blueprint, jsonify, make_response
 
 from ..models import meetups_model
 from ..utils.schemas import MeetingsSchema
+from ..utils.validators import Validators
 
+
+validator = Validators()
 meeting_schema = MeetingsSchema()
 
 meetupbp = Blueprint('meetupbp', __name__, url_prefix='/api/v1')
@@ -38,6 +41,13 @@ def create_meetup():
     for key, value in req_fields.items():
         if not value.strip():
             return make_response(jsonify({"status": 400, "error": f"{key} cannot be empty"})), 400
+
+    # check if date is valid(after creation date)
+    if validator.validate_meetup_date(happeningOn):
+        return make_response(jsonify({
+            "status": 400,
+            "message": "Happening on date cannot be before today"
+        })), 400
 
     new_meetup = meetups_model.Meetup(happeningOn, host, topic, summary,
                                       tags, location).createMeetup()

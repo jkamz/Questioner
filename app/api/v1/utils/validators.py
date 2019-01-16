@@ -43,7 +43,7 @@ class Validators():
 
     def validate_meetup_date(self, happeningOn):
 
-        created_on = datetime.now().strftime("%H:%M%P %A %d %B %Y")
+        created_on = datetime.now().strftime("%Y-%m-%d %H:%M")
         if happeningOn < created_on:
             return True
         return False
