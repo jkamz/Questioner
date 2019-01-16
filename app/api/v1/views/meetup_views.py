@@ -4,6 +4,9 @@ Create views for all meetup endpoints
 from flask import request, Blueprint, jsonify, make_response
 
 from ..models import meetups_model
+from ..utils.schemas import MeetingsSchema
+
+meeting_schema = MeetingsSchema()
 
 meetupbp = Blueprint('meetupbp', __name__, url_prefix='/api/v1')
 
@@ -23,6 +26,11 @@ def create_meetup():
     location = meetupdata.get('location')
     happeningOn = meetupdata.get('happeningOn')
     tags = meetupdata.get('tags')
+
+    # validate data types and required fields using marshmallow
+    data, errors = meeting_schema.load(meetupdata)
+    if errors:
+        return make_response(jsonify({"status": 400, "errors": errors})), 400
 
     req_fields = {"topic": topic, "location": location, "happeningOn": happeningOn}
 
