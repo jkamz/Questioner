@@ -4,6 +4,12 @@ Create views for all meetup endpoints
 from flask import request, Blueprint, jsonify, make_response
 
 from ..models import meetups_model
+from ..utils.schemas import MeetingsSchema
+from ..utils.validators import Validators
+
+
+validator = Validators()
+meeting_schema = MeetingsSchema()
 
 meetupbp = Blueprint('meetupbp', __name__, url_prefix='/api/v1')
 
@@ -21,10 +27,29 @@ def create_meetup():
     summary = meetupdata.get('summary')
     host = meetupdata.get('host')
     location = meetupdata.get('location')
-    occuring_on = meetupdata.get('occuring_on')
+    happeningOn = meetupdata.get('happeningOn')
     tags = meetupdata.get('tags')
 
-    new_meetup = meetups_model.Meetup(occuring_on, host, topic, summary,
+    # validate data types and required fields using marshmallow
+    data, errors = meeting_schema.load(meetupdata)
+    if errors:
+        return make_response(jsonify({"status": 400, "errors": errors})), 400
+
+    req_fields = {"topic": topic, "location": location, "happeningOn": happeningOn}
+
+    # check if all required values are present
+    for key, value in req_fields.items():
+        if not value.strip():
+            return make_response(jsonify({"status": 400, "error": f"{key} cannot be empty"})), 400
+
+    # check if date is valid(after creation date)
+    if validator.validate_meetup_date(happeningOn):
+        return make_response(jsonify({
+            "status": 400,
+            "message": "Happening on date cannot be before today"
+        })), 400
+
+    new_meetup = meetups_model.Meetup(happeningOn, host, topic, summary,
                                       tags, location).createMeetup()
 
     return jsonify({"status": 201, "data": new_meetup})

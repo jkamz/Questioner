@@ -19,10 +19,19 @@ class UserTest(unittest.TestCase):
         self.user = {
             "firstname": "andela",
             "lastname": "bootcamp",
-            "email": "andela.pac@pac.com",
+            "email": "andelapac@pac.com",
             "username": "andech",
             "isAdmin": True,
-            "password": "jkamz"
+            "password": "Jkamz6432@"
+        }
+
+        self.user2 = {
+            "firstname": "andela",
+            "lastname": "bootcamp",
+            "email": "andelapac2@pac.com",
+            "username": "andech2",
+            "isAdmin": True,
+            "password": "Jkamz6432@"
         }
 
         self.user1 = {
@@ -30,13 +39,13 @@ class UserTest(unittest.TestCase):
 
         self.userlogin = {
             "username": "andech",
-            "password": "jkamz",
+            "password": "Jkamz6432@",
             "isAdmin": True
         }
 
     def test_user_sign_up(self):
         '''test the endpoint for signing up a new user'''
-        res = self.client.post("api/v1/signup", data=json.dumps(self.user),
+        res = self.client.post("api/v1/signup", data=json.dumps(self.user2),
                                content_type="application/json")
 
         response_data = json.loads(res.data.decode())

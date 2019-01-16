@@ -13,13 +13,13 @@ class Meetup():
     define all meetup attributes and methods
     """
 
-    def __init__(self, occuring_on=None, host=None, topic=None, summary=None, tags=None, location=None):
+    def __init__(self, happeningOn=None, host=None, topic=None, summary=None, tags=None, location=None):
         '''
         initialize class
         '''
         self.meetupId = str(len(meetups) + 1)
-        self.created_on = datetime.now().strftime("%H:%M%P %A %d %B %Y")
-        self.occuring_on = occuring_on
+        self.created_on = datetime.now().strftime("%Y-%m-%d %H:%M")
+        self.happeningOn = happeningOn
         self.host = host
         self.topic = topic
         self.summary = summary
@@ -35,7 +35,7 @@ class Meetup():
             "meetupId": self.meetupId,
             "host": self.host,
             "created_on": self.created_on,
-            "occuring_on": self.occuring_on,
+            "happeningOn": self.happeningOn,
             "topic": self.topic,
             "summary": self.summary,
             "location": self.location,
