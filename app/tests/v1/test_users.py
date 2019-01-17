@@ -21,6 +21,7 @@ class UserTest(unittest.TestCase):
             "lastname": "bootcamp",
             "email": "andelapac@pac.com",
             "username": "andech",
+            "phoneNumber": "+254705107566",
             "isAdmin": True,
             "password": "Jkamz6432@"
         }
@@ -29,6 +30,7 @@ class UserTest(unittest.TestCase):
             "firstname": "andela",
             "lastname": "bootcamp",
             "email": "andelapac2@pac.com",
+            "phoneNumber": "+254705107566",
             "username": "andech2",
             "isAdmin": True,
             "password": "Jkamz6432@"

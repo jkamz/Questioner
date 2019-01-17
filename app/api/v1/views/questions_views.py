@@ -1,15 +1,19 @@
 """
 Create views for all questions endpoints
 """
-from flask import request, Blueprint, jsonify
+from flask import request, Blueprint, jsonify, make_response
 
 from ..models import questions_models
+from ..models.meetups_model import meetups
+from ..utils.schemas import QuestionsSchema
+
+schema = QuestionsSchema()
 
 questionbp = Blueprint('questionbp', __name__, url_prefix='/api/v1')
 
 
-@questionbp.route('meetups/<int:meetupId>/questions', methods=["POST"])
-def create_question(meetupId):
+@questionbp.route('/questions', methods=["POST"])
+def create_question():
     '''
     endpoint for creating a question record
     '''
@@ -22,6 +26,14 @@ def create_question(meetupId):
     title = question_data.get('title')
     body = question_data.get('body')
     author = question_data.get('author')
+    meetupId = question_data.get('meetupId')
+
+    data, errors = schema.load(question_data)
+    if errors:
+        return make_response(jsonify({"status": 400, "errors": errors})), 400
+
+    if meetupId > len(meetups):
+        return make_response(jsonify({"status": 400, "errors": "Non existent meetup"})), 400
 
     new_question = questions_models.Questions(meetupId).createQuestion(title, body, author)
 
@@ -39,7 +51,7 @@ def upvote_question(questionId):
     if upvote:
         return jsonify({"status": 200, "data": upvote}), 200
 
-    return jsonify({"status": 404, "messsage": "upvote not successful"}), 404
+    return jsonify({"status": 404, "messsage": "upvote not successful. Question not existent."}), 404
 
 
 @questionbp.route('/questions/<int:questionId>/downvote', methods=["PATCH"])
@@ -53,4 +65,4 @@ def downvote_question(questionId):
     if downvote:
         return jsonify({"status": 200, "data": downvote}), 200
 
-    return jsonify({"status": 404, "messsage": "downvote not successful"}), 404
+    return jsonify({"status": 404, "messsage": "downvote not successful. Question not existent."}), 404

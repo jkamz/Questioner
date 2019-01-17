@@ -4,17 +4,18 @@ Create views for all meetup endpoints
 from flask import request, Blueprint, jsonify, make_response
 
 from ..models import meetups_model
-from ..utils.schemas import MeetingsSchema
+from ..utils.schemas import MeetingsSchema, RsvpSchema
 from ..utils.validators import Validators
 
 
 validator = Validators()
 meeting_schema = MeetingsSchema()
+rsvp_schema = RsvpSchema()
 
 meetupbp = Blueprint('meetupbp', __name__, url_prefix='/api/v1')
 
 
-@meetupbp.route('/create_meetup', methods=['POST'])
+@meetupbp.route('/meetups', methods=['POST'])
 def create_meetup():
     '''endpoint for adding a meetup
     '''
@@ -49,13 +50,19 @@ def create_meetup():
             "message": "Happening on date cannot be before today"
         })), 400
 
+    if validator.validate_not_same_meetup(topic, happeningOn, location):
+        return make_response(jsonify({
+            "status": 400,
+            "message": "Similar meetup exists already"
+        })), 400
+
     new_meetup = meetups_model.Meetup(happeningOn, host, topic, summary,
                                       tags, location).createMeetup()
 
     return jsonify({"status": 201, "data": new_meetup})
 
 
-@meetupbp.route('/meetups/<meetupId>')
+@meetupbp.route('/meetups/<int:meetupId>')
 def get_meetup(meetupId):
     '''
     endpoint for getting one specific meetup
@@ -83,7 +90,7 @@ def get_meetups():
     }), 200)
 
 
-@meetupbp.route("meetups/<meetupId>/rsvps", methods=["POST"])
+@meetupbp.route("meetups/<int:meetupId>/rsvps", methods=["POST"])
 def meetup_rsvp(meetupId):
     '''
      endpoint for rsvp/ confirming meeting attendance
@@ -96,6 +103,20 @@ def meetup_rsvp(meetupId):
     meetupId = meetupId
     userId = rsvp_data.get('userId')
     response = rsvp_data.get('response')
+
+    data, errors = rsvp_schema.load(rsvp_data)
+
+    if errors:
+        return make_response(jsonify({"status": 400, "errors": errors})), 400
+
+    res = response.strip().lower()
+
+    if res != "yes":
+        if res != "no":
+            if res != "maybe":
+                return make_response(jsonify({
+                    "status": 400,
+                    "errors": "Invalid response. Input 'yes', 'no', or ''maybe"})), 400
 
     rsvp = meetups_model.Meetup().meetupRsvp(userId, meetupId, response)
     return jsonify({"status": 200, "data": rsvp})

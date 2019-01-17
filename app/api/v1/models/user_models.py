@@ -17,7 +17,7 @@ class User():
         Initialize class
         '''
 
-    def signUp(self, firstname, lastname, username, email, password, isAdmin):
+    def signUp(self, firstname, lastname, username, phoneNumber, email, password, isAdmin):
         '''
         Method for user sign up
         '''
@@ -27,13 +27,22 @@ class User():
             "lastname": lastname,
             "email": email,
             "username": username,
+            "phoneNumber": phoneNumber,
             "registered": datetime.now().strftime("%Y-%m-%d %H:%M"),
             "isAdmin": isAdmin,
             "password": password
         }
 
         users.append(user)
-        return user, {"message": "User created successfully"}
+
+        dont_return = {"password", "registered"}
+
+        def without_pass(d, keys):
+            return {x: d[x] for x in d if x not in keys}
+
+        return_user = without_pass(user, dont_return)
+
+        return return_user, {"message": "User created successfully"}
 
     @staticmethod
     def signIn(username, password, isAdmin):

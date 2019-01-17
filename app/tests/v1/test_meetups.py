@@ -25,6 +25,15 @@ class MeetupTest(unittest.TestCase):
             "topic": "python"
         }
 
+        self.meetup2 = {
+            "host": "jkamz",
+            "location": "Nairobi",
+            "happeningOn": "2021-01-16 19:00",
+            "summary": "Getting to know python",
+            "tags": "python pythonista flask",
+            "topic": "node"
+        }
+
         self.meetup1 = {}
 
         self.rsvp = {
@@ -37,7 +46,7 @@ class MeetupTest(unittest.TestCase):
     def test_create_meetup(self):
         '''test the endpoint of creating new meetup'''
 
-        res = self.client.post("api/v1/create_meetup", data=json.dumps(self.meetup),
+        res = self.client.post("api/v1/meetups", data=json.dumps(self.meetup),
                                content_type="application/json")
         response_data = json.loads(res.data.decode())
         self.assertEqual(res.status_code, 200)
@@ -47,7 +56,7 @@ class MeetupTest(unittest.TestCase):
     def test_create_invalid_meetup(self):
         '''test the endpoint of creating a new meetup record invalidly'''
 
-        res = self.client.post("api/v1/create_meetup", data=json.dumps(self.meetup1),
+        res = self.client.post("api/v1/meetups", data=json.dumps(self.meetup1),
                                content_type="application/json")
 
         response_data = json.loads(res.data.decode())
@@ -58,7 +67,7 @@ class MeetupTest(unittest.TestCase):
         '''test the endpoint for getting one meetup'''
 
         # first post/ create a meetup
-        res = self.client.post("api/v1/create_meetup", data=json.dumps(self.meetup),
+        res = self.client.post("api/v1/meetups", data=json.dumps(self.meetup2),
                                content_type="application/json")
         self.assertEqual(res.status_code, 200)
 
