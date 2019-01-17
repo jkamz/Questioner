@@ -22,3 +22,8 @@ class MeetingsSchema(Schema):
     topic = fields.String(required=True, validate=(not_blank, max_length))
     location = fields.String(required=True, validate=(not_blank, max_length))
     happeningOn = fields.DateTime("%Y-%m-%d %H:%M", required=True)
+
+
+class RsvpSchema(Schema):
+    userId = fields.Integer(required=True)
+    response = fields.String(required=True, validate=(not_blank))
