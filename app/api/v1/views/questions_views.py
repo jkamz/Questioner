@@ -11,8 +11,8 @@ schema = QuestionsSchema()
 questionbp = Blueprint('questionbp', __name__, url_prefix='/api/v1')
 
 
-@questionbp.route('meetups/<int:meetupId>/questions', methods=["POST"])
-def create_question(meetupId):
+@questionbp.route('/questions', methods=["POST"])
+def create_question():
     '''
     endpoint for creating a question record
     '''
@@ -30,7 +30,7 @@ def create_question(meetupId):
     if errors:
         return make_response(jsonify({"status": 400, "errors": errors})), 400
 
-    new_question = questions_models.Questions(meetupId).createQuestion(title, body, author)
+    new_question = questions_models.Questions().createQuestion(title, body, author)
 
     return jsonify({"status": 201, "data": new_question}), 201
 
