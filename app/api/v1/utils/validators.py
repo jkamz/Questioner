@@ -44,7 +44,8 @@ class Validators():
         has at least 1 letter and 1 number
         """
 
-        return re.match(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$', password)
+        regx = re.compile(r"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$")
+        return re.search(regx, password)
 
     def validate_meetup_date(self, happeningOn):
 
