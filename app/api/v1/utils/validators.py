@@ -4,9 +4,10 @@ Add base validations
 """
 
 import re
-import phonenumbers
 from datetime import datetime
+import phonenumbers
 from ..models.user_models import users
+from ..models.meetups_model import meetups
 
 
 class Validators():
@@ -68,3 +69,14 @@ class Validators():
 
         else:
             return phonenumbers.is_valid_number(x)
+
+    def validate_not_same_meetup(self, topic, happeningOn, location):
+        """ Ensure one meetup is not posted twice"""
+
+        meetup = [meetup for meetup in meetups if
+                  meetup["topic"] == topic and
+                  meetup["happeningOn"] == happeningOn and meetup["location"] == location]
+
+        if meetup:
+            return True
+        return False

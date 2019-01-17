@@ -49,6 +49,12 @@ def create_meetup():
             "message": "Happening on date cannot be before today"
         })), 400
 
+    if validator.validate_not_same_meetup(topic, happeningOn, location):
+        return make_response(jsonify({
+            "status": 400,
+            "message": "Similar meetup exists already"
+        })), 400
+
     new_meetup = meetups_model.Meetup(happeningOn, host, topic, summary,
                                       tags, location).createMeetup()
 
