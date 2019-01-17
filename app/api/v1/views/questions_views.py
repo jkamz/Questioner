@@ -46,7 +46,7 @@ def upvote_question(questionId):
     if upvote:
         return jsonify({"status": 200, "data": upvote}), 200
 
-    return jsonify({"status": 404, "messsage": "upvote not successful"}), 404
+    return jsonify({"status": 404, "messsage": "upvote not successful. Question not existent."}), 404
 
 
 @questionbp.route('/questions/<int:questionId>/downvote', methods=["PATCH"])
@@ -60,4 +60,4 @@ def downvote_question(questionId):
     if downvote:
         return jsonify({"status": 200, "data": downvote}), 200
 
-    return jsonify({"status": 404, "messsage": "downvote not successful"}), 404
+    return jsonify({"status": 404, "messsage": "downvote not successful. Question not existent."}), 404

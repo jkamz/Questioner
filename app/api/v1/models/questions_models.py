@@ -46,7 +46,7 @@ class Questions():
         if question:
             question[0]["votes"] += 1
 
-            return question, {"message": "upvote successfull"}
+            return question, {"message": "upvote successful"}
 
         return None
 
@@ -60,6 +60,6 @@ class Questions():
         if question:
             question[0]["votes"] -= 1
 
-            return question, {"message": "downvote successfull"}
+            return question, {"message": "downvote successful"}
 
         return None
