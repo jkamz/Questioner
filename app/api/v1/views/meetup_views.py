@@ -15,7 +15,7 @@ rsvp_schema = RsvpSchema()
 meetupbp = Blueprint('meetupbp', __name__, url_prefix='/api/v1')
 
 
-@meetupbp.route('/create_meetup', methods=['POST'])
+@meetupbp.route('/meetups', methods=['POST'])
 def create_meetup():
     '''endpoint for adding a meetup
     '''
