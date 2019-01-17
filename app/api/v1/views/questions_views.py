@@ -1,9 +1,12 @@
 """
 Create views for all questions endpoints
 """
-from flask import request, Blueprint, jsonify
+from flask import request, Blueprint, jsonify, make_response
 
 from ..models import questions_models
+from ..utils.schemas import QuestionsSchema
+
+schema = QuestionsSchema()
 
 questionbp = Blueprint('questionbp', __name__, url_prefix='/api/v1')
 
@@ -22,6 +25,10 @@ def create_question(meetupId):
     title = question_data.get('title')
     body = question_data.get('body')
     author = question_data.get('author')
+
+    data, errors = schema.load(question_data)
+    if errors:
+        return make_response(jsonify({"status": 400, "errors": errors})), 400
 
     new_question = questions_models.Questions(meetupId).createQuestion(title, body, author)
 

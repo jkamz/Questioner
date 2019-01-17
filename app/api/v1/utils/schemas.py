@@ -27,3 +27,9 @@ class MeetingsSchema(Schema):
 class RsvpSchema(Schema):
     userId = fields.Integer(required=True)
     response = fields.String(required=True, validate=(not_blank))
+
+
+class QuestionsSchema(Schema):
+    title = fields.String(required=True, validate=(not_blank, min_length))
+    body = fields.String(required=True, validate=(not_blank, min_length))
+    author = fields.String(required=True, validate=(not_blank, min_length))
