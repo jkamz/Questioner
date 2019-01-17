@@ -27,7 +27,7 @@ GET  | /api/v1/meetups/<int:meetup_id>  | Get a specific meetup   |
 GET  | /api/v1/meetups/   | Get all meetup records   |
 POST  | /api/v1/questions | Create a question.
 PATCH | /api/v1/questions/<int:question_id>/upvote | Adds votes by one |
-PUT | /api/v1/questions/<int:question_id>/downvote | Decreases votes by one  |
+PATCH | /api/v1/questions/<int:question_id>/downvote | Decreases votes by one  |
 POST | /api/v1/meetups/<int:meetup_id>/rsvps | Create a RSVP for a specific meetup
 POST  | /api/v1/signup  | create a new user |
 POST  | /api/v1/signin  | login user into the system |
