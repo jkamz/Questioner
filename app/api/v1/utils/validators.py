@@ -4,6 +4,7 @@ Add base validations
 """
 
 import re
+import phonenumbers
 from datetime import datetime
 from ..models.user_models import users
 
@@ -51,3 +52,18 @@ class Validators():
         if happeningOn < created_on:
             return True
         return False
+
+    def validate_phone_numbers(self, number):
+        """
+        parse phone number and raise exceptions in case it
+        is invalid
+        """
+        try:
+            x = phonenumbers.parse(number, None)
+
+        except phonenumbers.NumberParseException:
+
+            return False
+
+        else:
+            return phonenumbers.is_valid_number(x)

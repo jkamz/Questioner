@@ -65,10 +65,18 @@ def sign_up():
                 "message": "username not available"
             })), 400
 
+        # check pass strength
         if not validator.validate_password_strength(password):
             return make_response(jsonify({
                 "status": 400,
                 "message": "invalid password. Ensure password is at least 8 characters long and has atleast 1 letter and 1 number"
+            })), 400
+
+        # check phone number validity
+        if not validator.validate_phone_numbers(phoneNumber):
+            return make_response(jsonify({
+                "status": 400,
+                "message": "Not a valid phone number. User this format - '+2547..'"
             })), 400
 
         new_user = User().signUp(firstname, lastname, username,
