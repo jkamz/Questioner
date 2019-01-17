@@ -61,7 +61,7 @@ def create_meetup():
     return jsonify({"status": 201, "data": new_meetup})
 
 
-@meetupbp.route('/meetups/<meetupId>')
+@meetupbp.route('/meetups/<int:meetupId>')
 def get_meetup(meetupId):
     '''
     endpoint for getting one specific meetup
@@ -89,7 +89,7 @@ def get_meetups():
     }), 200)
 
 
-@meetupbp.route("meetups/<meetupId>/rsvps", methods=["POST"])
+@meetupbp.route("meetups/<int:meetupId>/rsvps", methods=["POST"])
 def meetup_rsvp(meetupId):
     '''
      endpoint for rsvp/ confirming meeting attendance

@@ -17,7 +17,7 @@ class Meetup():
         '''
         initialize class
         '''
-        self.meetupId = str(len(meetups) + 1)
+        self.meetupId = len(meetups) + 1
         self.created_on = datetime.now().strftime("%Y-%m-%d %H:%M")
         self.happeningOn = happeningOn
         self.host = host
@@ -61,8 +61,11 @@ class Meetup():
         '''
         Method for getting rsvp meetup
         '''
+        if meetupId > len(meetups):
+            return {"error": "non existent meetup"}
+
         rsvp_data = {
-            "rsvpId": str(len(rsvps) + 1),
+            "rsvpId": len(rsvps) + 1,
             "meetupId": meetupId,
             "userId": userId,
             "response": response
