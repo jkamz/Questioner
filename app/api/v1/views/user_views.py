@@ -25,6 +25,7 @@ def sign_up():
     lastname = user_data.get('lastname')
     isAdmin = user_data.get('isAdmin')
     email = user_data.get('email')
+    phoneNumber = user_data.get('phoneNumber')
     username = user_data.get('username')
     password = user_data.get('password')
 
@@ -34,12 +35,14 @@ def sign_up():
         return make_response(jsonify({"status": 400, "errors": errors})), 400
     else:
 
-        req_fields = {"firstname": firstname, "lastname": lastname, "username": username, "email": email, "password": password}
+        req_fields = {"firstname": firstname, "lastname": lastname,
+                      "username": username, "email": email, "password": password}
 
         # check if all required values are present
         for key, value in req_fields.items():
             if not value.strip():
-                return make_response(jsonify({"status": 400, "error": f"{key} cannot be empty"})), 400
+                return make_response(jsonify({"status": 400, "error":
+                                              f"{key} cannot be empty"})), 400
 
         # check if email is valid
         # if not validator.validate_email(email):
@@ -65,10 +68,11 @@ def sign_up():
         if not validator.validate_password_strength(password):
             return make_response(jsonify({
                 "status": 400,
-                "message": "invalid password. Ensure password is at least 8 characters long and has at least one uppercase letter, lowercase letter, a number, and a special character"
+                "message": "invalid password. Ensure password is at least 8 characters long and has atleast 1 letter and 1 number"
             })), 400
 
-        new_user = User().signUp(firstname, lastname, username, email, password, isAdmin)
+        new_user = User().signUp(firstname, lastname, username,
+                                 phoneNumber, email, password, isAdmin)
 
         return jsonify({"status": 201, "data": new_user}), 201
 

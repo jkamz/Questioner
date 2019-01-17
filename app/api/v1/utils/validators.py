@@ -38,8 +38,12 @@ class Validators():
         return False
 
     def validate_password_strength(self, password):
+        """
+        Password should be at least 8 characters and
+        has at least 1 letter and 1 number
+        """
 
-        return re.match(r'[A-Za-z0-9@#$%^&+=]{8,}', password)
+        return re.match(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$', password)
 
     def validate_meetup_date(self, happeningOn):
 
