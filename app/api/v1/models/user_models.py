@@ -33,7 +33,15 @@ class User():
         }
 
         users.append(user)
-        return user, {"message": "User created successfully"}
+
+        dont_return = {"password", "registered"}
+
+        def without_pass(d, keys):
+            return {x: d[x] for x in d if x not in keys}
+
+        return_user = without_pass(user, dont_return)
+
+        return return_user, {"message": "User created successfully"}
 
     @staticmethod
     def signIn(username, password, isAdmin):
