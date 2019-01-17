@@ -19,14 +19,14 @@ class QuestionTest(unittest.TestCase):
         self.question = {
             "author": "jkamz",
             "body": "what did you say?",
-            "meetup_id": 1,
+            "meetupId": 1,
             "title": "what"
         }
 
         self.meetup = {
             "host": "jkamz",
             "location": "Nairobi",
-            "happeningOn": "28th Jan",
+            "happeningOn": "2020-01-16 19:00",
             "summary": "Getting to know python",
             "tags": "python pythonista flask",
             "topic": "python"

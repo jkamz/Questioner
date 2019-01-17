@@ -4,6 +4,7 @@ Create views for all questions endpoints
 from flask import request, Blueprint, jsonify, make_response
 
 from ..models import questions_models
+from ..models.meetups_model import meetups
 from ..utils.schemas import QuestionsSchema
 
 schema = QuestionsSchema()
@@ -25,12 +26,16 @@ def create_question():
     title = question_data.get('title')
     body = question_data.get('body')
     author = question_data.get('author')
+    meetupId = question_data.get('meetupId')
 
     data, errors = schema.load(question_data)
     if errors:
         return make_response(jsonify({"status": 400, "errors": errors})), 400
 
-    new_question = questions_models.Questions().createQuestion(title, body, author)
+    if meetupId > len(meetups):
+        return make_response(jsonify({"status": 400, "errors": "Non existent meetup"})), 400
+
+    new_question = questions_models.Questions(meetupId).createQuestion(title, body, author)
 
     return jsonify({"status": 201, "data": new_question}), 201
 
