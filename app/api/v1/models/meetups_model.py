@@ -6,7 +6,6 @@ from datetime import datetime
 
 meetups = []
 rsvps = []
-upcomingMeetups = []
 
 
 class Meetup():
@@ -59,7 +58,7 @@ class Meetup():
         return meetups
 
     def allUpcomingMeetups(self):
-        '''method for getting all meetup records'''
+        '''method for getting all upcoming meetup records'''
         date = datetime.now().strftime("%Y-%m-%d %H:%M")
 
         x = [meetup for meetup in meetups if meetup["happeningOn"] > date]
