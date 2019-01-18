@@ -91,6 +91,13 @@ class MeetupTest(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(res_data["message"], "success")
 
+    def test_get_all_upcoming_meetups(self):
+        '''test the endpoint for getting all upcoming meetups'''
+        res = self.client.get("api/v1/meetups/upcoming")
+        res_data = json.loads(res.data.decode())
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(res_data["message"], "success")
+
     def test_meetup_rsvp(self):
         '''test the endpoint for meetup rsvp'''
         res = self.client.post("api/v1/meetups/1/rsvps", data=json.dumps(self.rsvp),

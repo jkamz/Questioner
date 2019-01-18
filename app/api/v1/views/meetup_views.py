@@ -90,6 +90,19 @@ def get_meetups():
     }), 200)
 
 
+@meetupbp.route("/meetups/upcoming")
+def get_upcoming_meetups():
+    '''
+     endpoint for getting all meetups
+    '''
+
+    meetups = meetups_model.Meetup().allUpcomingMeetups()
+    return make_response(jsonify({
+        "message": "success",
+        "meetups": meetups
+    }), 200)
+
+
 @meetupbp.route("meetups/<int:meetupId>/rsvps", methods=["POST"])
 def meetup_rsvp(meetupId):
     '''

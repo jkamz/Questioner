@@ -57,6 +57,13 @@ class Meetup():
         '''method for getting all meetup records'''
         return meetups
 
+    def allUpcomingMeetups(self):
+        '''method for getting all upcoming meetup records'''
+        date = datetime.now().strftime("%Y-%m-%d %H:%M")
+
+        x = [meetup for meetup in meetups if meetup["happeningOn"] > date]
+        return x
+
     def meetupRsvp(self, userId, meetupId, response):
         '''
         Method for getting rsvp meetup

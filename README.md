@@ -25,6 +25,7 @@ Required Method       | EndPoint       | Functionality |
 POST  | /api/v1/meetups  | Post a new meetup record   |
 GET  | /api/v1/meetups/<int:meetup_id>  | Get a specific meetup   |
 GET  | /api/v1/meetups/   | Get all meetup records   |
+GET  | /api/v1/meetups/upcoming   | Get all upcoming meetup records   |
 POST  | /api/v1/questions | Create a question.
 PATCH | /api/v1/questions/<int:question_id>/upvote | Adds votes by one |
 PATCH | /api/v1/questions/<int:question_id>/downvote | Decreases votes by one  |
