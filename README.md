@@ -42,7 +42,7 @@ To test the API on your local machine, start by cloning the Repository and navig
 
 `cd Questioner` to navigate to the root folder
 
-`git checkout develop` to navigate to the develop branch
+`git checkout challenge3` to navigate to the challenge3 branch
 
 
 ### Prerequisites
