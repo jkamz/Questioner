@@ -59,7 +59,15 @@ def create_table_schemas():
         roles VARCHAR (20) DEFAULT true
         );"""
 
-    return [users]
+    meetups = """ CREATE TABLE IF NOT EXISTS meetups (meetup_id serial PRIMARY KEY NOT NULL,
+        created_on TIMESTAMP NOT NULL DEFAULT current_timestamp,
+        happeningOn TIMESTAMP NOT NULL,
+        host VARCHAR (30) NOT NULL,
+        topic VARCHAR (30) NOT NULL,
+        summary VARCHAR (30) NOT NULL,
+        location VARCHAR (30) NOT NULL);"""
+
+    return [users, meetups]
 
 
 def create_tables():
