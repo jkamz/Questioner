@@ -74,7 +74,7 @@ def create_tables():
 
         for table in tables:
             curr.execute(table)
-            conn.commit()
+        conn.commit()
 
         return conn
 
