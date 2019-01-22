@@ -2,6 +2,7 @@
 Create views for all user endpoints
 """
 from flask import request, Blueprint, jsonify, make_response
+from werkzeug.security import generate_password_hash
 
 from ..models.user_models import User
 from ..utils.validators import Validators
@@ -52,6 +53,9 @@ def sign_up():
         # check phone number validity
         if not validator.validate_phone_numbers(phoneNumber):
             return make_response(jsonify(phonenumbererror))
+
+        # hash password
+        password = generate_password_hash(password)
 
         new_user = User().signUp(firstname, lastname, email, phoneNumber, username, password, isAdmin)
 
