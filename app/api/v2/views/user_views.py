@@ -12,7 +12,7 @@ auth = Blueprint('auth', __name__, url_prefix='/api/v2/auth')
 validator = Validators()
 
 
-@userbp.route('/signup', methods=['POST'])
+@auth.route('/signup', methods=['POST'])
 def sign_up():
     '''endpoint for adding a user
     '''
