@@ -9,7 +9,11 @@ class Config(object):
     """Parent configuration class"""
     DEBUG = False
     SECRET = os.getenv('SECRET')
-    DATABASE_URI = os.getenv('DATABASE_URL')
+    # DATABASE_URI = os.getenv('DATABASE_URL')
+    POSTGRES_USER = "postgres"
+    POSTGRES_PASSWORD = os.getenv('POSTGRES_PASSWORD')
+    POSTGRES_DB = "questionerdb"
+    POSTGRES_HOST = "localhost"
 
 
 class DevelopmentConfig(Config):
@@ -20,8 +24,9 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     """Testing configurations with a different test db"""
     TESTING = True
-    DATABASE_URI = 'URL for test db'
+    # DATABASE_URI = 'URL for test db'
     DEBUG = True
+    POSTGRES_DB = "testdb"
 
 
 class StagingConfig(Config):
