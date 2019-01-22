@@ -27,17 +27,11 @@ def destroy_database():
     Function to delete all tables
     """
 
-    # config_name = "testing"
-    # x = app_config[config_name]
-    # y = x()
-
-    # connString = 'dbname=%s user=%s password=%s host=%s' % (
-    #     y.POSTGRES_DB, y.POSTGRES_USER, y.POSTGRES_PASSWORD, y.POSTGRES_HOST)
-
     conn = psycopg2.connect(connString)
     curr = conn.cursor()
 
     curr.execute(""" DROP TABLE IF EXISTS users CASCADE; """)
+    curr.execute(""" DROP TABLE IF EXISTS meetups CASCADE; """)
 
     conn.commit()
     conn.close()
