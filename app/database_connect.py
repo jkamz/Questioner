@@ -44,7 +44,6 @@ def create_table_schemas():
     users = """ CREATE TABLE IF NOT EXISTS users (user_id serial PRIMARY KEY NOT NULL,
         firstname VARCHAR (30) NOT NULL,
         lastname VARCHAR (30) NOT NULL,
-        othername VARCHAR (30),
         email VARCHAR (30) NOT NULL,
         phone_number VARCHAR (30),
         username VARCHAR (20) NOT NULL,
