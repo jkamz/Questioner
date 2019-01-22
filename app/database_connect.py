@@ -75,8 +75,7 @@ def create_tables():
         for table in tables:
             curr.execute(table)
         conn.commit()
-
-        return conn
+        print("tables created")
 
     except (Exception, psycopg2.DatabaseError) as error:
         raise error
