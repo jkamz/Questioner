@@ -55,7 +55,7 @@ class User():
                             phoneNumber, username, registered_on, password, isAdmin))
         user = cur.fetchone()
         self.db.commit()
-        # cur.close()
+        cur.close()
 
         dont_return = {"password", "registered"}
 
