@@ -6,8 +6,6 @@ Add base validations
 import re
 from datetime import datetime
 import phonenumbers
-from ..models.user_models import users
-from ..models.meetups_model import meetups
 
 
 class Validators():
@@ -18,26 +16,6 @@ class Validators():
 
         regx = r"^[\w]+[\d]?@[\w]+\.[\w]+$"
         return re.match(regx, email)
-
-    def validate_unique_email(self, email):
-        '''check if email already exists'''
-
-        user = [user for user in users if user["email"] == email]
-
-        if user:
-            return True
-
-        return False
-
-    def validate_unique_username(self, username):
-        '''check if username already exists'''
-
-        user = [user for user in users if user["username"] == username]
-
-        if user:
-            return True
-
-        return False
 
     def validate_password_strength(self, password):
         """
@@ -69,14 +47,3 @@ class Validators():
 
         else:
             return phonenumbers.is_valid_number(x)
-
-    def validate_not_same_meetup(self, topic, happeningOn, location):
-        """ Ensure one meetup is not posted twice"""
-
-        meetup = [meetup for meetup in meetups if
-                  meetup["topic"] == topic and
-                  meetup["happeningOn"] == happeningOn and meetup["location"] == location]
-
-        if meetup:
-            return True
-        return False

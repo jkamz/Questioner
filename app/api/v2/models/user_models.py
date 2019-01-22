@@ -1,10 +1,12 @@
 """
 Models for users attributes and methods
 """
-
 from datetime import datetime
+
+
 from psycopg2.extras import RealDictCursor
 from app.database_connect import connect
+from ..utils.errors import usernameerror, emailerror
 
 
 class User():
@@ -27,15 +29,33 @@ class User():
         registered_on = datetime.now().strftime("%Y-%m-%d %H:%M")
 
         cur = self.db.cursor(cursor_factory=RealDictCursor)
+
+        # first check if username is available
+        query1 = """ SELECT username FROM users WHERE username = '%s'""" % (username)
+
+        cur.execute(query1)
+        user = cur.fetchone()
+        if user is not None:
+            return usernameerror
+
+        # check if email is taken
+        query2 = """ SELECT email FROM users WHERE email = '%s'""" % (email)
+
+        cur.execute(query2)
+        user = cur.fetchone()
+        if user is not None:
+            return emailerror
+
+        # create user
         query = """ INSERT INTO users (firstname, lastname, email,
         phoneNumber, username, registered_on, password, isAdmin) VALUES (
-        %S,%S,%S,%S,%S,%S,%S,%S) RETURNING * """
+        %s,%s,%s,%s,%s,%s,%s,%s) RETURNING * """
 
         cur.execute(query, (firstname, lastname, email,
                             phoneNumber, username, registered_on, password, isAdmin))
         user = cur.fetchone()
         self.db.commit()
-        cur.close()
+        # cur.close()
 
         dont_return = {"password", "registered"}
 
