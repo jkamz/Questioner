@@ -45,12 +45,11 @@ def create_table_schemas():
         firstname VARCHAR (30) NOT NULL,
         lastname VARCHAR (30) NOT NULL,
         email VARCHAR (30) NOT NULL,
-        phone_number VARCHAR (30),
+        phoneNumber VARCHAR (30),
         username VARCHAR (20) NOT NULL,
         registered_on TIMESTAMP NOT NULL DEFAULT current_timestamp,
         password VARCHAR (256) NOT NULL,
-        roles VARCHAR (20) DEFAULT true
-        );"""
+        isAdmin BOOLEAN DEFAULT false);"""
 
     meetups = """ CREATE TABLE IF NOT EXISTS meetups (meetup_id serial PRIMARY KEY NOT NULL,
         created_on TIMESTAMP NOT NULL DEFAULT current_timestamp,
