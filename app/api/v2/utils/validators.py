@@ -16,7 +16,7 @@ class Validators():
     def validate_email(self, email):
         '''match provided email using regex'''
 
-        regx = "^[\w]+[\d]?@[\w]+\.[\w]+$"
+        regx = r"^[\w]+[\d]?@[\w]+\.[\w]+$"
         return re.match(regx, email)
 
     def validate_unique_email(self, email):
