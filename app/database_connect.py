@@ -44,14 +44,12 @@ def create_table_schemas():
     users = """ CREATE TABLE IF NOT EXISTS users (user_id serial PRIMARY KEY NOT NULL,
         firstname VARCHAR (30) NOT NULL,
         lastname VARCHAR (30) NOT NULL,
-        othername VARCHAR (30),
         email VARCHAR (30) NOT NULL,
-        phone_number VARCHAR (30),
+        phoneNumber VARCHAR (30),
         username VARCHAR (20) NOT NULL,
         registered_on TIMESTAMP NOT NULL DEFAULT current_timestamp,
         password VARCHAR (256) NOT NULL,
-        roles VARCHAR (20) DEFAULT true
-        );"""
+        isAdmin BOOLEAN DEFAULT false);"""
 
     meetups = """ CREATE TABLE IF NOT EXISTS meetups (meetup_id serial PRIMARY KEY NOT NULL,
         created_on TIMESTAMP NOT NULL DEFAULT current_timestamp,
@@ -76,9 +74,9 @@ def create_tables():
 
         for table in tables:
             curr.execute(table)
-            conn.commit()
-
-        return conn
+        conn.commit()
+        conn.close()
+        print("tables created")
 
     except (Exception, psycopg2.DatabaseError) as error:
         raise error
