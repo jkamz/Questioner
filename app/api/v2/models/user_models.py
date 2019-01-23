@@ -14,7 +14,7 @@ class User():
     define all User attributes and methods
     """
 
-    def __init__(self, email, username, password, firstname, lastname, phoneNumber, isAdmin):
+    def __init__(self, email=None, username=None, password=None, firstname=None, lastname=None, phoneNumber=None, isAdmin=None):
         '''
         Initialize class
         '''
@@ -94,14 +94,13 @@ class User():
 
         return return_user, {"message": "User created successfully"}
 
-    def signIn(self):
+    def signIn(self, username, password):
         '''
         Method for user sign up
         '''
-        username = self.username
         cur = self.db.cursor(cursor_factory=RealDictCursor)
 
-        query = """ SELECT id, isAdmin, password FROM users WHERE username = '%s'""" % (username)
+        query = """ SELECT user_id, isAdmin, password, username FROM users WHERE username = '%s'""" % (username)
 
         cur.execute(query)
         user = cur.fetchone()
