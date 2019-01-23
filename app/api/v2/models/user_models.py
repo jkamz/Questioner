@@ -100,10 +100,10 @@ class User():
         '''
         cur = self.db.cursor(cursor_factory=RealDictCursor)
 
-        query = """ SELECT user_id, isAdmin, password, username FROM users WHERE username = '%s'""" % (username)
+        query = """ SELECT isAdmin, password, username FROM users WHERE username = '%s'""" % (username)
 
         cur.execute(query)
         user = cur.fetchone()
-        cur.close()
+        # cur.close()
 
         return user

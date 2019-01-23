@@ -23,6 +23,7 @@ install:
 script:
   - export FLASK_ENV=testing
   - export POSTGRES_PASSWORD=jkamz
+  - export SECRET="isthisforreal"
   - py.test --cov-report term --cov=app/
 
 after_script:
