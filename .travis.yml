@@ -19,6 +19,7 @@ install:
 
 script:
   - export FLASK_ENV=testing
+  - export POSTGRES_PASSWORD="jkamz"
   - py.test --cov-report term --cov=app/
 
 after_script:
