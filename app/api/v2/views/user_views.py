@@ -59,10 +59,7 @@ def sign_up():
 
         new_user = User(email, username, password).signUp(firstname, lastname, phoneNumber, isAdmin)
 
-        if new_user == usernameerror:
-            return jsonify({"status": 400, "message": usernameerror}), 400
-
-        if new_user == emailerror:
-            return jsonify({"status": 400, "message": emailerror}), 400
+        if new_user == usernameerror or new_user == emailerror:
+            return jsonify({"status": 400, "message": new_user}), 400
 
         return jsonify({"status": 201, "data": new_user}), 201
