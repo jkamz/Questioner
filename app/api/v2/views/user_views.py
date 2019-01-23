@@ -2,7 +2,8 @@
 Create views for all user endpoints
 """
 from flask import request, Blueprint, jsonify, make_response
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_jwt_extended import create_access_token
 
 from ..models.user_models import User
 from ..utils.validators import Validators
@@ -57,9 +58,42 @@ def sign_up():
         # hash password
         password = generate_password_hash(password)
 
-        new_user = User(email, username, password).signUp(firstname, lastname, phoneNumber, isAdmin)
+        userObj = User(email, username, password, firstname, lastname, phoneNumber, isAdmin)
+        new_user = userObj.signUp()
 
         if new_user == usernameerror or new_user == emailerror:
             return jsonify({"status": 400, "message": new_user}), 400
 
         return jsonify({"status": 201, "data": new_user}), 201
+
+
+@auth.route('/signin', methods=['POST'])
+def sign_in():
+    '''endpoint for adding a user
+    '''
+    user_data = request.get_json()
+
+    if not user_data:
+        return jsonify({"status": 400, "message": "expects only Application/JSON data"}), 400
+
+    username = user_data.get('username')
+    password = user_data.get('password')
+
+    userObj = User()
+    user = userObj.signIn(username, password)
+
+    if user:
+        check = check_password_hash(user['password'], password)
+
+        if check:
+            access_token = create_access_token(identity=username)
+            return jsonify({
+                "access_token": access_token,
+                "status": 200,
+                "data": "Successfully signed is as {}".format(user['username'])
+            }), 200
+
+    return jsonify({
+        "status": 400,
+        "message": "Sign in unsuccessful. Check username or password"
+    }), 400
