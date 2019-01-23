@@ -93,3 +93,18 @@ class User():
         return_user = without_pass(user, dont_return)
 
         return return_user, {"message": "User created successfully"}
+
+    def signIn(self):
+        '''
+        Method for user sign up
+        '''
+        username = self.username
+        cur = self.db.cursor(cursor_factory=RealDictCursor)
+
+        query = """ SELECT id, isAdmin, password FROM users WHERE username = '%s'""" % (username)
+
+        cur.execute(query)
+        user = cur.fetchone()
+        cur.close()
+
+        return user
