@@ -11,7 +11,7 @@ before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
-
+  - createdb testdb
 
 install:
   - pip install -r requirements.txt
@@ -19,7 +19,7 @@ install:
 
 script:
   - export FLASK_ENV=testing
-  - export POSTGRES_PASSWORD="jkamz"
+  - export POSTGRES_PASSWORD=jkamz
   - py.test --cov-report term --cov=app/
 
 after_script:
