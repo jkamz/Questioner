@@ -87,7 +87,7 @@ def sign_in():
         if check:
             return jsonify({
                 "status": 200,
-                "message": "Successfully signed is as {}".format(user['username'])
+                "data": "Successfully signed is as {}".format(user['username'])
             }), 200
 
     return jsonify({

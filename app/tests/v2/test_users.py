@@ -29,7 +29,7 @@ class TestUser(unittest.TestCase):
             "lastname": "bootcamp",
             "email": "andeelapac@pac.com",
             "phoneNumber": "+254705107566",
-            "username": "andeche",
+            "username": "andech",
             "password": "Jkamz6432@"
         }
 
@@ -43,6 +43,10 @@ class TestUser(unittest.TestCase):
         }
 
         self.user1 = {
+        }
+        self.userlogin = {
+            "username": "andech",
+            "password": "Jkamz6432@"
         }
 
     def test_user_sign_up(self):
@@ -62,6 +66,30 @@ class TestUser(unittest.TestCase):
     def test_invalid_user_sign_up(self):
         '''test the endpoint for signing up a new user invalidly'''
         res = self.client.post("/api/v2/auth/signup", data=json.dumps(self.user1),
+                               content_type="application/json")
+
+        response_data = json.loads(res.data.decode())
+        self.assertEqual(res.status_code, 400)
+        self.assertIn("expects only Application/JSON data", str(response_data))
+
+    def test_user_sign_in(self):
+        '''test endpoint for user sign in'''
+        # first signup user
+        res = self.client.post("api/v2/auth/signup", data=json.dumps(self.user),
+                               content_type="application/json")
+
+        # sign in
+        res = self.client.post("api/v2/auth/signin", data=json.dumps(self.userlogin),
+                               content_type="application/json")
+
+        response_data = json.loads(res.data.decode())
+        self.assertEqual(res.status_code, 200)
+        self.assertTrue(response_data["data"])
+        self.assertIn("Successfully signed is as andech", str(response_data))
+
+    def test_invalid_user_sign_in(self):
+        '''test the endpoint for signing in invalidly/ without inputing data'''
+        res = self.client.post("api/v2/auth/signin", data=json.dumps(self.user1),
                                content_type="application/json")
 
         response_data = json.loads(res.data.decode())
