@@ -20,7 +20,6 @@ class TestUser(unittest.TestCase):
 
         self.app = create_app(config_name)
         self.client = self.app.test_client()
-        #self.app_context = self.app
 
         connect()
         create_tables()
