@@ -2,6 +2,7 @@
 Create views for all meetup endpoints
 """
 from flask import request, Blueprint, jsonify, make_response
+from flask_jwt_extended import jwt_required
 
 from ..models import meetup_models
 from ..utils.schemas import MeetingsSchema
@@ -17,6 +18,7 @@ meetupbp = Blueprint('meetupbp', __name__, url_prefix='/api/v2')
 
 
 @meetupbp.route('/meetups', methods=['POST'])
+@jwt_required
 def create_meetup():
     '''endpoint for adding a meetup
     '''
