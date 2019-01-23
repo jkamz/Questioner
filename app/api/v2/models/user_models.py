@@ -104,6 +104,6 @@ class User():
 
         cur.execute(query)
         user = cur.fetchone()
-        # cur.close()
+        cur.close()
 
         return user
