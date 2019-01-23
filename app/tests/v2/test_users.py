@@ -52,9 +52,6 @@ class TestUser(unittest.TestCase):
     def test_user_sign_up(self):
         '''test the endpoint for signing up a new user'''
 
-        # connect()
-        # create_tables()
-
         res = self.client.post("api/v2/auth/signup", data=json.dumps(self.user),
                                content_type="application/json")
 
