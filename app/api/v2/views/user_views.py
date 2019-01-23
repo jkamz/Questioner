@@ -3,6 +3,9 @@ Create views for all user endpoints
 """
 from flask import request, Blueprint, jsonify, make_response
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_jwt_extended import (create_access_token, create_refresh_token,
+                                jwt_required, get_jwt_identity,
+                                jwt_refresh_token_required)
 
 from ..models.user_models import User
 from ..utils.validators import Validators
@@ -85,7 +88,9 @@ def sign_in():
         check = check_password_hash(user['password'], password)
 
         if check:
+            access_token = create_access_token(identity=username)
             return jsonify({
+                "access_token": access_token,
                 "status": 200,
                 "data": "Successfully signed is as {}".format(user['username'])
             }), 200
