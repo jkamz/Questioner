@@ -14,14 +14,46 @@ class User():
     define all User attributes and methods
     """
 
-    def __init__(self):
+    def __init__(self, email, username, password):
         '''
         Initialize class
         '''
 
         self.db = connect()
+        self.email = email
+        self.username = username
+        self.password = password
 
-    def signUp(self, firstname, lastname, email, phoneNumber, username, password, isAdmin):
+    def check_email_exist(self):
+        """
+        check if email is already registered
+        """
+        email = self.email
+        cur = self.db.cursor(cursor_factory=RealDictCursor)
+        query2 = """ SELECT email FROM users WHERE email = '%s'""" % (email)
+
+        cur.execute(query2)
+        user = cur.fetchone()
+        if user:
+            return True
+
+        return False
+
+    def check_username_exist(self):
+        """
+        check if username is already registered
+        """
+        username = self.username
+        cur = self.db.cursor(cursor_factory=RealDictCursor)
+        query1 = """ SELECT username FROM users WHERE username = '%s'""" % (username)
+
+        cur.execute(query1)
+        user = cur.fetchone()
+        if user:
+            return True
+        return False
+
+    def signUp(self, firstname, lastname, phoneNumber, isAdmin):
         '''
         Method for user sign up
         '''
@@ -31,19 +63,11 @@ class User():
         cur = self.db.cursor(cursor_factory=RealDictCursor)
 
         # first check if username is available
-        query1 = """ SELECT username FROM users WHERE username = '%s'""" % (username)
-
-        cur.execute(query1)
-        user = cur.fetchone()
-        if user is not None:
+        if self.check_username_exist():
             return usernameerror
 
         # check if email is taken
-        query2 = """ SELECT email FROM users WHERE email = '%s'""" % (email)
-
-        cur.execute(query2)
-        user = cur.fetchone()
-        if user is not None:
+        if self.check_email_exist():
             return emailerror
 
         # create user
@@ -51,13 +75,13 @@ class User():
         phoneNumber, username, registered_on, password, isAdmin) VALUES (
         %s,%s,%s,%s,%s,%s,%s,%s) RETURNING * """
 
-        cur.execute(query, (firstname, lastname, email,
-                            phoneNumber, username, registered_on, password, isAdmin))
+        cur.execute(query, (firstname, lastname, self.email,
+                            phoneNumber, self.username, registered_on, self.password, isAdmin))
         user = cur.fetchone()
         self.db.commit()
         cur.close()
 
-        dont_return = {"password", "registered"}
+        dont_return = {"password", "registered_on"}
 
         def without_pass(d, keys):
             return {x: d[x] for x in d if x not in keys}
