@@ -14,7 +14,7 @@ class User():
     define all User attributes and methods
     """
 
-    def __init__(self, email, username, password):
+    def __init__(self, email, username, password, firstname, lastname, phoneNumber, isAdmin):
         '''
         Initialize class
         '''
@@ -23,6 +23,10 @@ class User():
         self.email = email
         self.username = username
         self.password = password
+        self.firstname = firstname
+        self.lastname = lastname
+        self.phoneNumber = phoneNumber
+        self.isAdmin = isAdmin
 
     def check_email_exist(self):
         """
@@ -53,7 +57,7 @@ class User():
             return True
         return False
 
-    def signUp(self, firstname, lastname, phoneNumber, isAdmin):
+    def signUp(self):
         '''
         Method for user sign up
         '''
@@ -75,8 +79,8 @@ class User():
         phoneNumber, username, registered_on, password, isAdmin) VALUES (
         %s,%s,%s,%s,%s,%s,%s,%s) RETURNING * """
 
-        cur.execute(query, (firstname, lastname, self.email,
-                            phoneNumber, self.username, registered_on, self.password, isAdmin))
+        cur.execute(query, (self.firstname, self.lastname, self.email,
+                            self.phoneNumber, self.username, registered_on, self.password, self.isAdmin))
         user = cur.fetchone()
         self.db.commit()
         cur.close()

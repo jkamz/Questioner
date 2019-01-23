@@ -57,7 +57,7 @@ def sign_up():
         # hash password
         password = generate_password_hash(password)
 
-        new_user = User(email, username, password).signUp(firstname, lastname, phoneNumber, isAdmin)
+        new_user = User(email, username, password, firstname, lastname, phoneNumber, isAdmin).signUp()
 
         if new_user == usernameerror or new_user == emailerror:
             return jsonify({"status": 400, "message": new_user}), 400
