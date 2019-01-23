@@ -9,6 +9,7 @@ from instance.config import app_config
 
 from app import database_connect
 from .api.v2.views.user_views import auth
+from .api.v2.views.meetup_views import meetupbp
 
 
 def create_app(config_name):
@@ -23,5 +24,6 @@ def create_app(config_name):
     jwt = JWTManager(app)
 
     app.register_blueprint(auth)
+    app.register_blueprint(meetupbp)
 
     return app
