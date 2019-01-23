@@ -4,7 +4,7 @@
 
 # Questioner API V2
 
-[![Build Status](https://travis-ci.org/jkamz/Questioner.svg?branch=develop)](https://travis-ci.org/jkamz/Questioner) [![Coverage Status](https://coveralls.io/repos/github/jkamz/Questioner/badge.svg?branch=develop)](https://coveralls.io/github/jkamz/Questioner?branch=develop)   [![Maintainability](https://api.codeclimate.com/v1/badges/ccc01049d9b2db4cf789/maintainability)](https://codeclimate.com/github/jkamz/Questioner/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/ccc01049d9b2db4cf789/test_coverage)](https://codeclimate.com/github/jkamz/Questioner/test_coverage)
+[![Build Status](https://travis-ci.org/jkamz/Questioner.svg?branch=challenge3)](https://travis-ci.org/jkamz/Questioner) [![Coverage Status](https://coveralls.io/repos/github/jkamz/Questioner/badge.svg?branch=develop)](https://coveralls.io/github/jkamz/Questioner?branch=challenge3)   [![Maintainability](https://api.codeclimate.com/v1/badges/ccc01049d9b2db4cf789/maintainability)](https://codeclimate.com/github/jkamz/Questioner/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/ccc01049d9b2db4cf789/test_coverage)](https://codeclimate.com/github/jkamz/Questioner/test_coverage)
 
 </div>
 
