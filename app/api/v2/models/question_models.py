@@ -23,7 +23,7 @@ class Questions():
         self.title = title
         self.body = body
         self.author = author
-        self.created_on = datetime.now().strftime("%H:%M%P %A %d %B %Y")
+        self.created_on = datetime.now().strftime("%Y-%m-%d %H:%M")
         self.votes = 0
 
     def check_meetup_exist(self):
