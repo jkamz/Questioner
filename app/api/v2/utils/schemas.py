@@ -25,7 +25,6 @@ class MeetingsSchema(Schema):
 
 
 class RsvpSchema(Schema):
-    userId = fields.Integer(required=True)
     response = fields.String(required=True, validate=(not_blank))
 
 

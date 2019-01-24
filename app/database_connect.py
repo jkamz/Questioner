@@ -78,8 +78,8 @@ def create_table_schemas():
 
     rsvps = """ CREATE TABLE IF NOT EXISTS rsvps (rsvp_id serial PRIMARY KEY NOT NULL,
         meetup_id INTEGER NOT NULL,
-        user_id INTEGER NOT NULL
-        response VARCHAR(6) NOT NULL);"""
+        user_id INTEGER NOT NULL,
+        response VARCHAR (6) NOT NULL);"""
 
     return [users, meetups, questions, comments, rsvps]
 

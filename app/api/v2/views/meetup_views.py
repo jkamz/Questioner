@@ -6,13 +6,14 @@ from flask_jwt_extended import jwt_required
 from flask_jwt_extended import get_jwt_identity
 
 from ..models import meetup_models
-from ..utils.schemas import MeetingsSchema
+from ..utils.schemas import MeetingsSchema, RsvpSchema
 from ..utils.validators import Validators
 from ..utils.errors import meetuperror
 
 
 validator = Validators()
 meeting_schema = MeetingsSchema()
+rsvp_schema = RsvpSchema()
 
 
 meetupbp = Blueprint('meetupbp', __name__, url_prefix='/api/v2')
@@ -112,3 +113,42 @@ def get_upcoming_meetups():
         "message": "success",
         "meetups": meetups
     }), 200)
+
+
+@meetupbp.route("meetups/<int:meetup_id>/rsvps", methods=["POST"])
+@jwt_required
+def meetup_rsvp(meetup_id):
+    '''
+     endpoint for rsvp/ confirming meeting attendance
+    '''
+
+    rsvp_data = request.get_json()
+
+    if not rsvp_data:
+        return jsonify({"status": 400, "message": "expects only Application/JSON data"}), 400
+
+    current_user = get_jwt_identity()
+
+    # fetch user id
+    user_id = meetup_models.Meetup().check_user_id(current_user)
+    response = rsvp_data.get('response')
+
+    data, errors = rsvp_schema.load(rsvp_data)
+
+    if errors:
+        return make_response(jsonify({"status": 400, "errors": errors})), 400
+
+    res = response.strip().lower()
+
+    # check if rsvp exist
+    if meetup_models.Meetup().check_rsvp_exists(user_id, meetup_id, response):
+        return make_response(jsonify({"status": 400, "errors": f"already made reservation for {current_user}"})), 400
+
+    if res == "yes" or res == "no" or res == "maybe":
+
+        rsvp = meetup_models.Meetup().meetupRsvp(meetup_id, user_id, response, current_user)
+        return jsonify({"status": 200, "data": rsvp})
+
+    return make_response(jsonify({
+        "status": 400,
+        "errors": "Invalid response. Input 'yes', 'no', or ''maybe"})), 400
