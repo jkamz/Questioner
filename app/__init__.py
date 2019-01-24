@@ -11,6 +11,7 @@ from app import database_connect
 from .api.v2.views.user_views import auth
 from .api.v2.views.meetup_views import meetupbp
 from .api.v2.views.question_views import questionbp
+from .api.v2.views.comment_views import commentbp
 
 
 def create_app(config_name):
@@ -27,5 +28,6 @@ def create_app(config_name):
     app.register_blueprint(auth)
     app.register_blueprint(meetupbp)
     app.register_blueprint(questionbp)
+    app.register_blueprint(commentbp)
 
     return app
