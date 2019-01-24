@@ -92,7 +92,16 @@ class Meetup():
 
     def allUpcomingMeetups(self):
         '''method for getting all upcoming meetup records'''
-        pass
+        cur = self.db.cursor(cursor_factory=RealDictCursor)
+
+        query = """ SELECT * FROM meetups """
+
+        cur.execute(query)
+        meetups = cur.fetchall()
+        date = datetime.now().strftime("%Y-%m-%d %H:%M")
+
+        x = [meetup for meetup in meetups if meetup["happeningon"] > date]
+        return x
 
     def meetupRsvp(self, userId, meetupId, response):
         '''

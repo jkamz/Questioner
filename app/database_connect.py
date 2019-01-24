@@ -53,7 +53,7 @@ def create_table_schemas():
 
     meetups = """ CREATE TABLE IF NOT EXISTS meetups (meetup_id serial PRIMARY KEY NOT NULL,
         created_on TIMESTAMP NOT NULL DEFAULT current_timestamp,
-        happeningOn TIMESTAMP NOT NULL,
+        happeningOn VARCHAR NOT NULL,
         host VARCHAR (30) NOT NULL,
         topic VARCHAR (30) NOT NULL,
         summary VARCHAR (30) NOT NULL,
