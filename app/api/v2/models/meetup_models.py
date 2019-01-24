@@ -67,11 +67,17 @@ class Meetup():
 
         return meetup
 
-    def getMeetup(self, meetupId):
+    def getMeetup(self, meetup_id):
         '''
         Method for getting one meetup record
         '''
-        pass
+        cur = self.db.cursor(cursor_factory=RealDictCursor)
+
+        query = " SELECT * FROM meetups WHERE meetup_id = '{}'".format(meetup_id)
+
+        cur.execute(query)
+        meetup = cur.fetchone()
+        return meetup
 
     def allMeetups(self):
         '''method for getting all meetup records'''
