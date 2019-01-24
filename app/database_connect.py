@@ -66,10 +66,15 @@ def create_table_schemas():
         title VARCHAR NOT NULL,
         body VARCHAR NOT NULL,
         author VARCHAR (30) NOT NULL,
-        votes INTEGER NOT NULL DEFAULT 0);
-    """
+        votes INTEGER NOT NULL DEFAULT 0);"""
 
-    return [users, meetups, questions]
+    comments = """ CREATE TABLE IF NOT EXISTS comments (comment_id serial PRIMARY KEY NOT NULL,
+        question_id INTEGER NOT NULL,
+        created_on TIMESTAMP NOT NULL DEFAULT current_timestamp,
+        body VARCHAR NOT NULL,
+        author VARCHAR (30) NOT NULL);"""
+
+    return [users, meetups, questions, comments]
 
 
 def create_tables():
