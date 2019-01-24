@@ -33,3 +33,8 @@ class QuestionsSchema(Schema):
     title = fields.String(required=True, validate=(not_blank, min_length))
     body = fields.String(required=True, validate=(not_blank, min_length))
     author = fields.String(required=True, validate=(not_blank, min_length))
+
+
+class CommentsSchema(Schema):
+    body = fields.String(required=True, validate=(not_blank, min_length))
+    author = fields.String(required=True, validate=(not_blank, min_length))
