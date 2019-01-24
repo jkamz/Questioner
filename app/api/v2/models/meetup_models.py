@@ -87,7 +87,7 @@ class Meetup():
         query = """ SELECT * FROM meetups """
 
         cur.execute(query)
-        meetups = cur.fetchone()
+        meetups = cur.fetchall()
         return meetups
 
     def allUpcomingMeetups(self):
