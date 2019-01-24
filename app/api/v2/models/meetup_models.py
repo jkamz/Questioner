@@ -27,13 +27,23 @@ class Meetup():
         self.location = location
 
     def check_user_status(self, username):
-
+        """check if user is admin"""
         cur = self.db.cursor(cursor_factory=RealDictCursor)
         query1 = """ SELECT isAdmin FROM users WHERE username = '%s'""" % (username)
 
         cur.execute(query1)
         user = cur.fetchone()
         return user
+
+    def check_user_id(self, username):
+        """fetch user id"""
+
+        cur = self.db.cursor(cursor_factory=RealDictCursor)
+        query = """ SELECT * FROM users WHERE username = '%s'""" % (username)
+
+        cur.execute(query)
+        user = cur.fetchone()
+        return user["user_id"]
 
     def check_meetup_exists(self):
         """check if meetup is already in db"""
@@ -43,11 +53,25 @@ class Meetup():
 
         cur = self.db.cursor(cursor_factory=RealDictCursor)
 
-        query = """ SELECT meetup_id FROM meetups WHERE happeningOn='{}' AND topic='{}' AND location='{}' """.format(happeningOn, topic, location)
+        query = """ SELECT meetup_id FROM meetups WHERE happeningOn='{}'
+        AND topic='{}' AND location='{}' """.format(happeningOn, topic, location)
 
         cur.execute(query)
         meetup = cur.fetchall()
         if meetup:
+            return True
+
+        return False
+
+    def check_rsvp_exists(self, user_id, meetup_id, response):
+        """check if reservation exists already"""
+        cur = self.db.cursor(cursor_factory=RealDictCursor)
+        query = """ SELECT * FROM rsvps WHERE user_id = '{}' AND meetup_id = '{}'
+         AND response = '{}' ORDER BY user_id DESC LIMIT 1""".format(user_id, meetup_id, response)
+
+        cur.execute(query)
+        rsvp = cur.fetchone()
+        if rsvp:
             return True
 
         return False
@@ -112,7 +136,17 @@ class Meetup():
         x = [meetup for meetup in meetups if meetup["happeningon"] > date]
         return x
 
-    def meetupRsvp(self, userId, meetupId, response):
+    def meetupRsvp(self, meetup_id, user_id, response, current_user):
         '''
         Method for getting rsvp meetup
         '''
+        cur = self.db.cursor(cursor_factory=RealDictCursor)
+
+        query = "INSERT INTO rsvps (meetup_id, user_id, response) VALUES (%s, %s, %s) RETURNING *"
+
+        cur.execute(query, (meetup_id, user_id, response))
+        rsvp_data = cur.fetchone()
+        self.db.commit()
+        cur.close()
+
+        return rsvp_data, {"message": f"attendance status confirmed for {current_user}"}

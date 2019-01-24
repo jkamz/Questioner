@@ -34,6 +34,7 @@ def destroy_database():
     curr.execute(""" DROP TABLE IF EXISTS meetups CASCADE; """)
     curr.execute(""" DROP TABLE IF EXISTS questions CASCADE; """)
     curr.execute(""" DROP TABLE IF EXISTS comments CASCADE; """)
+    curr.execute(""" DROP TABLE IF EXISTS rsvps CASCADE; """)
 
     conn.commit()
     conn.close()
@@ -75,7 +76,12 @@ def create_table_schemas():
         body VARCHAR NOT NULL,
         author VARCHAR (30) NOT NULL);"""
 
-    return [users, meetups, questions, comments]
+    rsvps = """ CREATE TABLE IF NOT EXISTS rsvps (rsvp_id serial PRIMARY KEY NOT NULL,
+        meetup_id INTEGER NOT NULL,
+        user_id INTEGER NOT NULL,
+        response VARCHAR (6) NOT NULL);"""
+
+    return [users, meetups, questions, comments, rsvps]
 
 
 def create_tables():

@@ -48,8 +48,12 @@ class MeetupTest(unittest.TestCase):
             "summary": "Getting to know python",
             "topic": "node"
         }
+        self.rsvp = {
+            "userId": "1",
+            "response": "yes"
+        }
 
-        self.meetup1 = {}
+        self.empty = {}
 
     def register_and_login_user(self):
         """Register and sign in user to get auth token"""
@@ -88,7 +92,7 @@ class MeetupTest(unittest.TestCase):
         # create user and generate token
         self.register_and_login_user()
 
-        res = self.client.post("api/v2/meetups", data=json.dumps(self.meetup1), headers=self.headers)
+        res = self.client.post("api/v2/meetups", data=json.dumps(self.empty), headers=self.headers)
 
         response_data = json.loads(res.data.decode())
         self.assertEqual(res.status_code, 400)
@@ -130,6 +134,30 @@ class MeetupTest(unittest.TestCase):
         res_data = json.loads(res.data.decode())
         self.assertEqual(res.status_code, 200)
         self.assertEqual(res_data["message"], "success")
+
+    def test_meetup_rsvp(self):
+        '''test the endpoint for meetup rsvp'''
+        # create user and generate token
+        self.register_and_login_user()
+
+        res = self.client.post("api/v2/meetups/1/rsvps",
+                               data=json.dumps(self.rsvp), headers=self.headers)
+        res_data = json.loads(res.data.decode())
+        self.assertEqual(res.status_code, 200)
+        self.assertIn("attendance status confirmed for andech", str(res_data))
+
+    def test_create_invalid_rsvp(self):
+        '''test the endpoint of creating an rsvp invalidly'''
+
+        # create user and generate token
+        self.register_and_login_user()
+
+        res = self.client.post("api/v2/meetups/1/rsvps",
+                               data=json.dumps(self.empty), headers=self.headers)
+
+        response_data = json.loads(res.data.decode())
+        self.assertEqual(res.status_code, 400)
+        self.assertIn("expects only Application/JSON data", str(response_data))
 
     def tearDown(self):
         ''' Purge all posted data before running tests again '''
