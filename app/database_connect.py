@@ -56,10 +56,19 @@ def create_table_schemas():
         happeningOn VARCHAR NOT NULL,
         host VARCHAR (30) NOT NULL,
         topic VARCHAR (30) NOT NULL,
-        summary VARCHAR (30) NOT NULL,
+        summary VARCHAR (100) NOT NULL,
         location VARCHAR (30) NOT NULL);"""
 
-    return [users, meetups]
+    questions = """ CREATE TABLE IF NOT EXISTS questions (question_id serial PRIMARY KEY NOT NULL,
+        meetup_id INTEGER NOT NULL,
+        created_on TIMESTAMP NOT NULL DEFAULT current_timestamp,
+        title VARCHAR NOT NULL,
+        body VARCHAR NOT NULL,
+        author VARCHAR (30) NOT NULL,
+        votes INTEGER NOT NULL DEFAULT 0);
+    """
+
+    return [users, meetups, questions]
 
 
 def create_tables():
