@@ -57,6 +57,18 @@ class Questions():
 
         return False
 
+    def get_question_by_id(self, question_id):
+        """check if a question exists using question id"""
+        cur = self.db.cursor(cursor_factory=RealDictCursor)
+        query = """ SELECT * FROM questions WHERE question_id = '%s'""" % (question_id)
+        cur.execute(query)
+        question = cur.fetchone()
+
+        if question:
+            return True
+
+        return False
+
     def createQuestion(self):
         '''
         Method for creating a new question record
