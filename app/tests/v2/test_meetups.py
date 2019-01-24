@@ -117,6 +117,13 @@ class MeetupTest(unittest.TestCase):
         self.assertEqual(get_res.status_code, 404)
         self.assertEqual(get_res_data["message"], "meetup not found")
 
+    def test_get_all_meetups(self):
+        '''test the endpoint for getting all meetups'''
+        res = self.client.get("api/v2/meetups")
+        res_data = json.loads(res.data.decode())
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(res_data["message"], "success")
+
     def tearDown(self):
         ''' Purge all posted data before running tests again '''
         destroy_database()

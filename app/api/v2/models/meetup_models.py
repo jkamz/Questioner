@@ -81,7 +81,14 @@ class Meetup():
 
     def allMeetups(self):
         '''method for getting all meetup records'''
-        pass
+
+        cur = self.db.cursor(cursor_factory=RealDictCursor)
+
+        query = """ SELECT * FROM meetups """
+
+        cur.execute(query)
+        meetups = cur.fetchall()
+        return meetups
 
     def allUpcomingMeetups(self):
         '''method for getting all upcoming meetup records'''
