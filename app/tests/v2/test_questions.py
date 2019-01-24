@@ -49,7 +49,12 @@ class QuestionTest(unittest.TestCase):
             "topic": "python"
         }
 
-        self.question1 = {}
+        self.comment = {
+            "author": "jkamz",
+            "body": "Nairobi is a good city"
+        }
+
+        self.empty = {}
 
         self.vote = {
             "questionId": 1
@@ -92,7 +97,6 @@ class QuestionTest(unittest.TestCase):
 
         self.assertEqual(res.status_code, 201)
         self.assertTrue(response_data["data"])
-        # self.assertIn("User created successfully", str(response_data))
 
     def test_create_invalid_question(self):
         '''test the endpoint of creating a new question record invalidly'''
@@ -100,7 +104,7 @@ class QuestionTest(unittest.TestCase):
         # create_user and generate token
         self.register_and_login_user()
 
-        res = self.client.post("api/v2/meetups/1/questions", data=json.dumps(self.question1),
+        res = self.client.post("api/v2/meetups/1/questions", data=json.dumps(self.empty),
                                content_type="application/json")
 
         response_data = json.loads(res.data.decode())
@@ -110,3 +114,43 @@ class QuestionTest(unittest.TestCase):
     def tearDown(self):
         ''' Purge all posted data before running tests again '''
         destroy_database()
+
+    def test_create_comment(self):
+        '''test the endpoint of creating new comment record'''
+
+        # create_user and generate token
+        self.register_and_login_user()
+
+        # post meetup
+        res = self.client.post("api/v2/meetups", data=json.dumps(self.meetup), headers=self.headers)
+
+        # post question
+        res = self.client.post("api/v2/meetups/1/questions", data=json.dumps(self.question),
+                               content_type="application/json")
+
+        # post comment
+        res = self.client.post("api/v2/questions/1/comments", data=json.dumps(self.comment),
+                               content_type="application/json")
+
+        response_data = json.loads(res.data.decode())
+
+        self.assertEqual(res.status_code, 201)
+        self.assertTrue(response_data["data"])
+
+    def test_create_invalid_comment(self):
+        '''test the endpoint of creating a new question record invalidly'''
+
+        # create_user and generate token
+        self.register_and_login_user()
+
+        # create question
+        res = self.client.post("api/v2/meetups/1/questions", data=json.dumps(self.empty),
+                               content_type="application/json")
+
+        # create comment
+        res = self.client.post("api/v2/questions/1/comments", data=json.dumps(self.empty),
+                               content_type="application/json")
+
+        response_data = json.loads(res.data.decode())
+        self.assertEqual(res.status_code, 400)
+        self.assertIn("expects only Application/JSON data", str(response_data))
