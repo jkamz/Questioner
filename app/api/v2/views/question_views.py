@@ -5,6 +5,7 @@ from flask import request, Blueprint, jsonify, make_response
 
 from ..models import question_models
 from ..utils.schemas import QuestionsSchema
+from ..utils.errors import questionerror, meetupexisterror
 
 schema = QuestionsSchema()
 
@@ -32,5 +33,8 @@ def create_question(meetup_id):
 
     new_questionObj = question_models.Questions(meetup_id, title, body, author)
     new_question = new_questionObj.createQuestion()
+
+    if new_question == questionerror or new_question == meetupexisterror:
+        return jsonify({"status": 400, "message": new_question}), 400
 
     return jsonify({"status": 201, "data": new_question}), 201

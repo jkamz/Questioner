@@ -6,7 +6,7 @@ from datetime import datetime
 
 from psycopg2.extras import RealDictCursor
 from app.database_connect import connect
-from ..utils.errors import meetupexisterror
+from ..utils.errors import meetupexisterror, questionerror
 
 
 class Questions():
@@ -40,6 +40,23 @@ class Questions():
 
         return False
 
+    def check_question_exist(self):
+        """check if question is already in db"""
+        title = self.title
+        body = self.body
+        author = self.author
+
+        cur = self.db.cursor(cursor_factory=RealDictCursor)
+
+        query = """ SELECT question_id FROM questions WHERE title='{}' AND body='{}' AND author='{}' """.format(title, body, author)
+
+        cur.execute(query)
+        question = cur.fetchone()
+        if question:
+            return True
+
+        return False
+
     def createQuestion(self):
         '''
         Method for creating a new question record
@@ -48,6 +65,10 @@ class Questions():
         # first ensure meetup exists
         if not self.check_meetup_exist():
             return meetupexisterror
+
+        # check if comment is duplicate
+        if self.check_question_exist():
+            return questionerror
 
         cur = self.db.cursor(cursor_factory=RealDictCursor)
 
