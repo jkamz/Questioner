@@ -112,7 +112,17 @@ class Meetup():
         x = [meetup for meetup in meetups if meetup["happeningon"] > date]
         return x
 
-    def meetupRsvp(self, userId, meetupId, response):
+    def meetupRsvp(self, meetup_id, user_id, response):
         '''
         Method for getting rsvp meetup
         '''
+        cur = self.db.cursor(cursor_factory=RealDictCursor)
+
+        query = "INSERT INTO rsvps (meetup_id, user_id, response) VALUES (%s, %s, %s) RETURNING *"
+
+        cur.execute(query, (meetup_id, user_id, response))
+        rsvp_data = cur.fetchone()
+        self.db.commit()
+        cur.close()
+
+        return rsvp_data, {"message": "attendance status confirmed"}
