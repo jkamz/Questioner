@@ -3,6 +3,7 @@ Create views for all meetup endpoints
 """
 from flask import request, Blueprint, jsonify, make_response
 from flask_jwt_extended import jwt_required
+from flask_jwt_extended import get_jwt_identity
 
 from ..models import meetup_models
 from ..utils.schemas import MeetingsSchema
@@ -22,9 +23,20 @@ meetupbp = Blueprint('meetupbp', __name__, url_prefix='/api/v2')
 def create_meetup():
     '''endpoint for adding a meetup
     '''
+
+    current_user = get_jwt_identity()
+
+    # check if user is admin
+    if not meetup_models.Meetup().check_user_status(current_user):
+        return make_response(jsonify({
+            "status": "400",
+            "message": "user not admin"
+        }), 400)
+
     meetupdata = request.get_json()
 
     if not meetupdata:
+        hI4IUHJRja9Mn5buQUbErtjLKtS9AXzOrfwNBGqrHs8
         return jsonify({"status": 400, "message": "expects only Application/JSON data"}), 400
 
     topic = meetupdata.get('topic')

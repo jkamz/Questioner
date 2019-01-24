@@ -26,6 +26,15 @@ class Meetup():
         self.summary = summary
         self.location = location
 
+    def check_user_status(self, username):
+
+        cur = self.db.cursor(cursor_factory=RealDictCursor)
+        query1 = """ SELECT isAdmin FROM users WHERE username = '%s'""" % (username)
+
+        cur.execute(query1)
+        user = cur.fetchone()
+        return user
+
     def check_meetup_exists(self):
         """check if meetup is already in db"""
         happeningOn = self.happeningOn
