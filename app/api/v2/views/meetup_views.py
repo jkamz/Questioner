@@ -36,7 +36,6 @@ def create_meetup():
     meetupdata = request.get_json()
 
     if not meetupdata:
-        hI4IUHJRja9Mn5buQUbErtjLKtS9AXzOrfwNBGqrHs8
         return jsonify({"status": 400, "message": "expects only Application/JSON data"}), 400
 
     topic = meetupdata.get('topic')
