@@ -102,4 +102,24 @@ class Questions():
         self.db.commit()
         cur.close()
 
-        return question
+        return question, {"message": "upvote successful"}
+
+    def downvoteQuestion(self, question_id, username):
+        '''
+        Method for upvoting a question
+        '''
+        cur = self.db.cursor(cursor_factory=RealDictCursor)
+
+        query = """ INSERT INTO votes (question_id, username) VALUES (%s, %s) """
+
+        query1 = """ UPDATE questions SET votes = votes-1 WHERE id = {} RETURNING * """.format(
+            question_id)
+
+        cur.execute(query1)
+        question = cur.fetchone()
+
+        cur.execute(query, (question_id, username))
+        self.db.commit()
+        cur.close()
+
+        return question, {"message": "downvote successful"}
