@@ -6,7 +6,7 @@ from datetime import datetime
 
 from psycopg2.extras import RealDictCursor
 from app.database_connect import connect
-from ..utils.errors import meetupexisterror, questionerror
+from ..utils.errors import meetupexisterror, questionerror, questionexisterror
 
 
 class Questions():
@@ -14,7 +14,7 @@ class Questions():
    define all questions attributes and methods
     """
 
-    def __init__(self, meetup_id, title, body, author):
+    def __init__(self, meetup_id=None, title=None, body=None, author=None):
         """
         initialize Questions class
         """
@@ -100,6 +100,11 @@ class Questions():
         '''
         Method for upvoting a question
         '''
+
+        # first check if question exists
+        if not self.get_question_by_id(question_id):
+            return questionexisterror
+
         cur = self.db.cursor(cursor_factory=RealDictCursor)
 
         query = """ INSERT INTO votes (question_id, username) VALUES (%s, %s) """
@@ -120,6 +125,11 @@ class Questions():
         '''
         Method for upvoting a question
         '''
+
+        # first check if question exists
+        if not self.get_question_by_id(question_id):
+            return questionexisterror
+
         cur = self.db.cursor(cursor_factory=RealDictCursor)
 
         query = """ INSERT INTO votes (question_id, username) VALUES (%s, %s) """
