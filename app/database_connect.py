@@ -32,6 +32,7 @@ def destroy_database():
 
     curr.execute(""" DROP TABLE IF EXISTS users CASCADE; """)
     curr.execute(""" DROP TABLE IF EXISTS meetups CASCADE; """)
+    curr.execute(""" DROP TABLE IF EXISTS questions CASCADE; """)
 
     conn.commit()
     conn.close()

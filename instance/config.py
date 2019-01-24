@@ -12,7 +12,7 @@ class Config(object):
     # DATABASE_URI = os.getenv('DATABASE_URL')
     POSTGRES_USER = "postgres"
     POSTGRES_PASSWORD = os.getenv('POSTGRES_PASSWORD')
-    POSTGRES_DB = "questionerdb"
+    POSTGRES_DB = "questioner"
     POSTGRES_HOST = "localhost"
 
 
