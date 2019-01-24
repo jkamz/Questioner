@@ -70,7 +70,7 @@ class Comment():
         cur = self.db.cursor(cursor_factory=RealDictCursor)
 
         query = """INSERT INTO comments (question_id, body,
-        author) VALUES (%s, %s, %s, %s, %s, %s) RETURNING * """
+        author) VALUES (%s, %s, %s) RETURNING * """
 
         cur.execute(query, (self.question_id, self.body, self.author))
 
