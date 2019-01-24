@@ -24,7 +24,6 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     """Testing configurations with a different test db"""
     TESTING = True
-    # DATABASE_URI = 'URL for test db'
     DEBUG = True
     POSTGRES_DB = "testdb"
 
