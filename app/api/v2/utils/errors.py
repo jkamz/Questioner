@@ -15,3 +15,5 @@ phonenumbererror = {
 usernameerror = "username not available"
 emailerror = "email already taken"
 meetuperror = "meetup already posted"
+meetupexisterror = "meetup not existent"
+questionerror = "question already posted"
