@@ -81,7 +81,14 @@ def create_table_schemas():
         user_id INTEGER NOT NULL,
         response VARCHAR (6) NOT NULL);"""
 
-    return [users, meetups, questions, comments, rsvps]
+    votes = """CREATE TABLE IF NOT EXISTS votes(
+        vote_id serial NOT NULL,
+        question_id INTEGER NOT NULL,
+        username VARCHAR (100) NOT NULL,
+        PRIMARY KEY (question_id, username)
+    );"""
+
+    return [users, meetups, questions, comments, rsvps, votes]
 
 
 def create_tables():
