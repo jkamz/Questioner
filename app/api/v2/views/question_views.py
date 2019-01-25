@@ -50,16 +50,12 @@ def upvote_question(question_id):
 
     current_user = get_jwt_identity()
 
-    try:
-        vote = question_models.Questions().upvoteQuestion(question_id, current_user)
+    vote = question_models.Questions().upvoteQuestion(question_id, current_user)
 
-        if vote == questionexisterror:
-            return jsonify({"status": 400, "data": vote}), 400
+    if vote == questionexisterror:
+        return jsonify({"status": 400, "data": vote}), 400
 
-        return jsonify({"status": 200, "data": vote}), 200
-    except:
-
-        return jsonify({"status": 400, "data": "already voted"}), 400
+    return jsonify({"status": 200, "data": vote}), 200
 
 
 @questionbp.route('/questions/<int:question_id>/downvote', methods=["PATCH"])
@@ -71,13 +67,9 @@ def downvote_question(question_id):
 
     current_user = get_jwt_identity()
 
-    try:
+    vote = question_models.Questions().downvoteQuestion(question_id, current_user)
 
-        vote = question_models.Questions().downvoteQuestion(question_id, current_user)
+    if vote == questionexisterror:
+        return jsonify({"status": 400, "data": vote}), 400
 
-        if vote == questionexisterror:
-            return jsonify({"status": 400, "data": vote}), 400
-
-        return jsonify({"status": 200, "data": vote}), 200
-    except:
-        return jsonify({"status": 400, "data": "already voted"}), 400
+    return jsonify({"status": 200, "data": vote}), 200

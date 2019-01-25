@@ -107,13 +107,31 @@ class Questions():
 
         cur = self.db.cursor(cursor_factory=RealDictCursor)
 
-        query = """ INSERT INTO upvotes (question_id, username) VALUES (%s, %s) """
+        # check if upvote exists
+        query_check_vote = """ SELECT * FROM upvotes WHERE question_id = '%s'
+        AND username = '%s' """ % (question_id, username)
 
-        query1 = """ UPDATE questions SET votes = votes+1 WHERE question_id = {} RETURNING * """.format(
+        cur.execute(query_check_vote)
+        vote = cur.fetchone()
+        if vote:
+            return {"status": 400, "message": "Already voted"}
+
+        # delete vote from downvotes table if exist
+        query_delete_vote = """DELETE FROM downvotes WHERE username = '{}'
+        and question_id = '{}';""".format(username, question_id)
+
+        cur.execute(query_delete_vote)
+
+        # add upvote to question table
+        query_upvote = """ UPDATE questions SET votes = votes+1 WHERE
+        question_id = {} RETURNING * """.format(
             question_id)
 
-        cur.execute(query1)
+        cur.execute(query_upvote)
         question = cur.fetchone()
+
+        # add vote to upvotes table
+        query = """ INSERT INTO upvotes (question_id, username) VALUES (%s, %s) """
 
         cur.execute(query, (question_id, username))
         self.db.commit()
@@ -132,16 +150,34 @@ class Questions():
 
         cur = self.db.cursor(cursor_factory=RealDictCursor)
 
-        query = """ INSERT INTO downvotes (question_id, username) VALUES (%s, %s) """
+        # check if downvote exists
+        query_check_vote = """ SELECT * FROM downvotes WHERE question_id = '%s'
+        AND username = '%s' """ % (question_id, username)
 
-        query1 = """ UPDATE questions SET votes = votes-1 WHERE question_id = {} RETURNING * """.format(
+        cur.execute(query_check_vote)
+        vote = cur.fetchone()
+        if vote:
+            return {"status": 400, "message": "Already voted"}
+
+        # delete vote from upvotes table if exist
+        query_delete_vote = """DELETE FROM upvotes WHERE username = '{}'
+        and question_id = '{}';""".format(username, question_id)
+
+        cur.execute(query_delete_vote)
+
+        # add upvote to question table
+        query_upvote = """ UPDATE questions SET votes = votes+1 WHERE
+        question_id = {} RETURNING * """.format(
             question_id)
 
-        cur.execute(query1)
+        cur.execute(query_upvote)
         question = cur.fetchone()
+
+        # add vote to upvotes table
+        query = """ INSERT INTO upvotes (question_id, username) VALUES (%s, %s) """
 
         cur.execute(query, (question_id, username))
         self.db.commit()
         cur.close()
 
-        return question, {"message": "downvote successful"}
+        return question, {"message": "upvote successful"}
