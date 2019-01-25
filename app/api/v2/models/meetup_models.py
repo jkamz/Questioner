@@ -136,6 +136,18 @@ class Meetup():
         x = [meetup for meetup in meetups if meetup["happeningon"] > date]
         return x
 
+    def deleteMeetup(self, meetup_id):
+        '''
+        method for deleting meetup
+        '''
+        cur = self.db.cursor(cursor_factory=RealDictCursor)
+
+        query = "DELETE FROM meetups WHERE meetup_id = '{}';".format(meetup_id)
+        cur.execute(query)
+
+        self.db.commit()
+        cur.close()
+
     def meetupRsvp(self, meetup_id, user_id, response, current_user):
         '''
         Method for getting rsvp meetup

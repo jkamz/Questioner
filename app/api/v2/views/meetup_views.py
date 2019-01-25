@@ -149,3 +149,23 @@ def meetup_rsvp(meetup_id):
     return make_response(jsonify({
         "status": 400,
         "errors": "Invalid response. Input 'yes', 'no', or ''maybe"})), 400
+
+
+@meetupbp.route('/meetups/<int:meetup_id>', methods=['DELETE'])
+@jwt_required
+def delete_meetup(meetup_id):
+    '''endpoint for adding a meetup
+    '''
+    current_user = get_jwt_identity()
+
+    # check if user is admin
+    if current_user != "admin":
+        return jsonify({"status": 403, "message": "Not authorized to delete meetup"}), 403
+
+    meetup_models.Meetup().deleteMeetup(meetup_id)
+
+    return jsonify(
+        {"status": 200,
+         "message": "meetup id {} was successfully deleted".format(meetup_id)
+         }
+    ), 200
