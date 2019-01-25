@@ -2,7 +2,7 @@
 Create views for all questions endpoints
 """
 from flask import request, Blueprint, jsonify, make_response
-from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import get_jwt_identity, jwt_required
 
 from ..models import question_models
 from ..utils.schemas import QuestionsSchema
@@ -42,6 +42,7 @@ def create_question(meetup_id):
 
 
 @questionbp.route('/questions/<int:question_id>/upvote', methods=["PATCH"])
+@jwt_required
 def upvote_question(question_id):
     '''
     endpoint for upvoting a question
@@ -49,15 +50,20 @@ def upvote_question(question_id):
 
     current_user = get_jwt_identity()
 
-    vote = question_models.Questions().upvoteQuestion(question_id, current_user)
+    try:
+        vote = question_models.Questions().upvoteQuestion(question_id, current_user)
 
-    if vote == questionexisterror:
-        return jsonify({"status": 400, "data": vote}), 400
+        if vote == questionexisterror:
+            return jsonify({"status": 400, "data": vote}), 400
 
-    return jsonify({"status": 200, "data": vote}), 200
+        return jsonify({"status": 200, "data": vote}), 200
+    except:
+
+        return jsonify({"status": 400, "data": "already voted"}), 400
 
 
 @questionbp.route('/questions/<int:question_id>/downvote', methods=["PATCH"])
+@jwt_required
 def downvote_question(question_id):
     '''
     endpoint for downvoting a question
@@ -65,9 +71,13 @@ def downvote_question(question_id):
 
     current_user = get_jwt_identity()
 
-    vote = question_models.Questions().downvoteQuestion(question_id, current_user)
+    try:
 
-    if vote == questionexisterror:
-        return jsonify({"status": 400, "data": vote}), 400
+        vote = question_models.Questions().downvoteQuestion(question_id, current_user)
 
-    return jsonify({"status": 200, "data": vote}), 200
+        if vote == questionexisterror:
+            return jsonify({"status": 400, "data": vote}), 400
+
+        return jsonify({"status": 200, "data": vote}), 200
+    except:
+        return jsonify({"status": 400, "data": "already voted"}), 400

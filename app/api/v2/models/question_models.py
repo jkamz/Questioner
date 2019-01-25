@@ -107,9 +107,9 @@ class Questions():
 
         cur = self.db.cursor(cursor_factory=RealDictCursor)
 
-        query = """ INSERT INTO votes (question_id, username) VALUES (%s, %s) """
+        query = """ INSERT INTO upvotes (question_id, username) VALUES (%s, %s) """
 
-        query1 = """ UPDATE questions SET votes = votes+1 WHERE id = {} RETURNING * """.format(
+        query1 = """ UPDATE questions SET votes = votes+1 WHERE question_id = {} RETURNING * """.format(
             question_id)
 
         cur.execute(query1)
@@ -132,9 +132,9 @@ class Questions():
 
         cur = self.db.cursor(cursor_factory=RealDictCursor)
 
-        query = """ INSERT INTO votes (question_id, username) VALUES (%s, %s) """
+        query = """ INSERT INTO downvotes (question_id, username) VALUES (%s, %s) """
 
-        query1 = """ UPDATE questions SET votes = votes-1 WHERE id = {} RETURNING * """.format(
+        query1 = """ UPDATE questions SET votes = votes-1 WHERE question_id = {} RETURNING * """.format(
             question_id)
 
         cur.execute(query1)
