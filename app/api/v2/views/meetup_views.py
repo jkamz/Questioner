@@ -28,11 +28,8 @@ def create_meetup():
     current_user = get_jwt_identity()
 
     # check if user is admin
-    if not meetup_models.Meetup().check_user_status(current_user):
-        return make_response(jsonify({
-            "status": "400",
-            "message": "user not admin"
-        }), 400)
+    if current_user != "admin":
+        return jsonify({"status": 403, "message": "Not authorized to create meetup"}), 403
 
     meetupdata = request.get_json()
 
