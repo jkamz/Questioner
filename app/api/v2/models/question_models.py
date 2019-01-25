@@ -6,7 +6,7 @@ from datetime import datetime
 
 from psycopg2.extras import RealDictCursor
 from app.database_connect import connect
-from ..utils.errors import meetupexisterror, questionerror
+from ..utils.errors import meetupexisterror, questionerror, questionexisterror
 
 
 class Questions():
@@ -14,7 +14,7 @@ class Questions():
    define all questions attributes and methods
     """
 
-    def __init__(self, meetup_id, title, body, author):
+    def __init__(self, meetup_id=None, title=None, body=None, author=None):
         """
         initialize Questions class
         """
@@ -57,6 +57,18 @@ class Questions():
 
         return False
 
+    def get_question_by_id(self, question_id):
+        """check if a question exists using question id"""
+        cur = self.db.cursor(cursor_factory=RealDictCursor)
+        query = """ SELECT * FROM questions WHERE question_id = '%s'""" % (question_id)
+        cur.execute(query)
+        question = cur.fetchone()
+
+        if question:
+            return True
+
+        return False
+
     def createQuestion(self):
         '''
         Method for creating a new question record
@@ -83,3 +95,89 @@ class Questions():
         cur.close()
 
         return question
+
+    def upvoteQuestion(self, question_id, username):
+        '''
+        Method for upvoting a question
+        '''
+
+        # first check if question exists
+        if not self.get_question_by_id(question_id):
+            return questionexisterror
+
+        cur = self.db.cursor(cursor_factory=RealDictCursor)
+
+        # check if upvote exists
+        query_check_vote = """ SELECT * FROM upvotes WHERE question_id = '%s'
+        AND username = '%s' """ % (question_id, username)
+
+        cur.execute(query_check_vote)
+        vote = cur.fetchone()
+        if vote:
+            return {"status": 400, "message": "Already voted"}
+
+        # delete vote from downvotes table if exist
+        query_delete_vote = """DELETE FROM downvotes WHERE username = '{}'
+        and question_id = '{}';""".format(username, question_id)
+
+        cur.execute(query_delete_vote)
+
+        # add upvote to question table
+        query_upvote = """ UPDATE questions SET votes = votes+1 WHERE
+        question_id = {} RETURNING * """.format(
+            question_id)
+
+        cur.execute(query_upvote)
+        question = cur.fetchone()
+
+        # add vote to upvotes table
+        query = """ INSERT INTO upvotes (question_id, username) VALUES (%s, %s) """
+
+        cur.execute(query, (question_id, username))
+        self.db.commit()
+        cur.close()
+
+        return question, {"message": "upvote successful"}
+
+    def downvoteQuestion(self, question_id, username):
+        '''
+        Method for upvoting a question
+        '''
+
+        # first check if question exists
+        if not self.get_question_by_id(question_id):
+            return questionexisterror
+
+        cur = self.db.cursor(cursor_factory=RealDictCursor)
+
+        # check if downvote exists
+        query_check_vote = """ SELECT * FROM downvotes WHERE question_id = '%s'
+        AND username = '%s' """ % (question_id, username)
+
+        cur.execute(query_check_vote)
+        vote = cur.fetchone()
+        if vote:
+            return {"status": 400, "message": "Already voted"}
+
+        # delete vote from upvotes table if exist
+        query_delete_vote = """DELETE FROM upvotes WHERE username = '{}'
+        and question_id = '{}';""".format(username, question_id)
+
+        cur.execute(query_delete_vote)
+
+        # add upvote to question table
+        query_upvote = """ UPDATE questions SET votes = votes+1 WHERE
+        question_id = {} RETURNING * """.format(
+            question_id)
+
+        cur.execute(query_upvote)
+        question = cur.fetchone()
+
+        # add vote to upvotes table
+        query = """ INSERT INTO upvotes (question_id, username) VALUES (%s, %s) """
+
+        cur.execute(query, (question_id, username))
+        self.db.commit()
+        cur.close()
+
+        return question, {"message": "upvote successful"}

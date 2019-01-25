@@ -33,6 +33,11 @@ class MeetupTest(unittest.TestCase):
             "password": "Jkamz6432@"
         }
 
+        self.adminlogin = {
+            "username": "admin",
+            "password": "Jkamz6432@"
+        }
+
         self.meetup = {
             "host": "jkamz",
             "location": "Nairobi",
@@ -75,11 +80,28 @@ class MeetupTest(unittest.TestCase):
 
         return self.headers
 
+    def login_admin(self):
+        """Register and sign in user to get auth token"""
+
+        # sign in
+        res1 = self.client.post("api/v2/auth/signin", data=json.dumps(self.adminlogin),
+                                content_type="application/json")
+
+        response_data = json.loads(res1.data.decode())
+        token = response_data["access_token"]
+
+        self.headers = {
+            'Authorization': 'Bearer {}'.format(token),
+            'Content-Type': 'application/json'
+        }
+
+        return self.headers
+
     def test_create_meetup(self):
         '''test the endpoint of creating new meetup'''
 
-        # create user and generate token
-        self.register_and_login_user()
+        # login admin
+        self.login_admin()
 
         res = self.client.post("api/v2/meetups", data=json.dumps(self.meetup), headers=self.headers)
         response_data = json.loads(res.data.decode())
@@ -89,8 +111,8 @@ class MeetupTest(unittest.TestCase):
     def test_create_invalid_meetup(self):
         '''test the endpoint of creating a new meetup record invalidly'''
 
-        # create user and generate token
-        self.register_and_login_user()
+        # login admin
+        self.login_admin()
 
         res = self.client.post("api/v2/meetups", data=json.dumps(self.empty), headers=self.headers)
 
@@ -101,8 +123,8 @@ class MeetupTest(unittest.TestCase):
     def test_get_one_meetup(self):
         '''test the endpoint for getting one meetup'''
 
-        # create user and generate token
-        self.register_and_login_user()
+        # login admin
+        self.login_admin()
 
         # post/ create a meetup
         res = self.client.post("api/v2/meetups", data=json.dumps(self.meetup2), headers=self.headers)

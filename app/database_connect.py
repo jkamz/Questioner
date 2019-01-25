@@ -1,5 +1,7 @@
 import os
 import psycopg2
+from werkzeug.security import generate_password_hash
+
 from instance.config import app_config
 
 config_name = os.getenv('FLASK_ENV')
@@ -35,6 +37,7 @@ def destroy_database():
     curr.execute(""" DROP TABLE IF EXISTS questions CASCADE; """)
     curr.execute(""" DROP TABLE IF EXISTS comments CASCADE; """)
     curr.execute(""" DROP TABLE IF EXISTS rsvps CASCADE; """)
+    curr.execute(""" DROP TABLE IF EXISTS votes CASCADE; """)
 
     conn.commit()
     conn.close()
@@ -81,7 +84,49 @@ def create_table_schemas():
         user_id INTEGER NOT NULL,
         response VARCHAR (6) NOT NULL);"""
 
-    return [users, meetups, questions, comments, rsvps]
+    upvotes = """CREATE TABLE IF NOT EXISTS upvotes(
+        vote_id serial NOT NULL,
+        question_id INTEGER NOT NULL,
+        username VARCHAR (100) NOT NULL,
+        PRIMARY KEY (question_id, username)
+    );"""
+
+    downvotes = """CREATE TABLE IF NOT EXISTS downvotes(
+        vote_id serial NOT NULL,
+        question_id INTEGER NOT NULL,
+        username VARCHAR (100) NOT NULL,
+        PRIMARY KEY (question_id, username)
+    );"""
+
+    return [users, meetups, questions, comments, rsvps, upvotes, downvotes]
+
+
+def add_admin():
+    try:
+        conn = psycopg2.connect(connString)
+        curr = conn.cursor()
+        user = "admin"
+        query = """SELECT * FROM users WHERE username = '{}'""".format(user)
+
+        curr.execute(query)
+        admin = curr.fetchone()
+
+        if not admin:
+            query1 = """ INSERT INTO users (firstname, lastname, email,
+                    phoneNumber, username,password, isAdmin) VALUES (
+                    %s,%s,%s,%s,%s,%s,%s) RETURNING user_id, email, username, isAdmin;"""
+
+            pass_hashed = generate_password_hash("Jkamz6432@")
+
+            data = ('super', 'user', 'admin@admin.com', '+254705107566', 'admin', pass_hashed, 'TRUE')
+
+            curr.execute(query1, data)
+            conn.commit()
+            conn.close()
+            print("Default Admin added")
+
+    except (Exception, psycopg2.DatabaseError) as error:
+        raise error
 
 
 def create_tables():
@@ -98,6 +143,7 @@ def create_tables():
             curr.execute(table)
         conn.commit()
         conn.close()
+        add_admin()
         print("tables created")
 
     except (Exception, psycopg2.DatabaseError) as error:

@@ -54,6 +54,11 @@ class QuestionTest(unittest.TestCase):
             "body": "Nairobi is a good city"
         }
 
+        self.adminlogin = {
+            "username": "admin",
+            "password": "Jkamz6432@"
+        }
+
         self.empty = {}
 
         self.vote = {
@@ -80,11 +85,26 @@ class QuestionTest(unittest.TestCase):
 
         return self.headers
 
+    def login_admin(self):
+        """Register and sign in admin to get auth token"""
+
+        # sign in
+        res1 = self.client.post("api/v2/auth/signin", data=json.dumps(self.adminlogin),
+                                content_type="application/json")
+
+        response_data = json.loads(res1.data.decode())
+        token = response_data["access_token"]
+
+        self.headers = {
+            'Authorization': 'Bearer {}'.format(token),
+            'Content-Type': 'application/json'
+        }
+
     def test_create_question(self):
         '''test the endpoint of creating new question record'''
 
-        # create_user and generate token
-        self.register_and_login_user()
+        # login admin
+        self.login_admin()
 
         # post meetup
         res = self.client.post("api/v2/meetups", data=json.dumps(self.meetup), headers=self.headers)
@@ -118,8 +138,8 @@ class QuestionTest(unittest.TestCase):
     def test_create_comment(self):
         '''test the endpoint of creating new comment record'''
 
-        # create_user and generate token
-        self.register_and_login_user()
+        # login admin
+        self.login_admin()
 
         # post meetup
         res = self.client.post("api/v2/meetups", data=json.dumps(self.meetup), headers=self.headers)
