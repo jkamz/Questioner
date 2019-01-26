@@ -166,7 +166,7 @@ class Questions():
         cur.execute(query_delete_vote)
 
         # add upvote to question table
-        query_upvote = """ UPDATE questions SET votes = votes+1 WHERE
+        query_upvote = """ UPDATE questions SET votes = votes-1 WHERE
         question_id = {} RETURNING * """.format(
             question_id)
 
