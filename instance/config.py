@@ -37,6 +37,10 @@ class ProductionConfig(Config):
     """Configurations for Production."""
     DEBUG = False
     TESTING = False
+    POSTGRES_USER = "epctuwdaikjkjj"
+    POSTGRES_PASSWORD = "b20f4aaa747147ce35302b2d2b62baf50160704d9444f0afd4d7b8c39d394e6f"
+    POSTGRES_DB = "d8vae2f9bj8fkb"
+    POSTGRES_HOST = "ec2-54-235-67-106.compute-1.amazonaws.com"
 
 
 app_config = {

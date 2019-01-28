@@ -1,3 +1,6 @@
+"""
+Setup database connection and defaults
+"""
 import os
 import psycopg2
 from werkzeug.security import generate_password_hash
@@ -7,6 +10,7 @@ from instance.config import app_config
 config_name = os.getenv('FLASK_ENV')
 x = app_config[config_name]
 y = x()
+
 
 connString = 'dbname=%s user=%s password=%s host=%s' % (
     y.POSTGRES_DB, y.POSTGRES_USER, y.POSTGRES_PASSWORD, y.POSTGRES_HOST)
