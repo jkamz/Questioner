@@ -1,7 +1,7 @@
 """Creating the app"""
 
 import os
-from flask import Flask
+from flask import Flask, jsonify
 from flask_jwt_extended import JWTManager
 
 from instance.config import app_config
@@ -29,5 +29,13 @@ def create_app(config_name):
     app.register_blueprint(meetupbp)
     app.register_blueprint(questionbp)
     app.register_blueprint(commentbp)
+
+    @app.errorhandler(404)
+    def not_found_error(error):
+        """ handle resource not found error """
+        return jsonify({
+            "message": "Resource Not Found",
+            "status": 404
+        }), 404
 
     return app
