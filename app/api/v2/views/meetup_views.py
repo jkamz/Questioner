@@ -45,14 +45,14 @@ def create_meetup():
     # validate data types and required fields using marshmallow
     data, errors = meeting_schema.load(meetupdata)
     if errors:
-        return make_response(jsonify({"status": 400, "errors": errors})), 400
+        return make_response(jsonify({"status": 400, "message": errors})), 400
 
     req_fields = {"topic": topic, "location": location, "happeningOn": happeningOn}
 
     # check if all required values are present
     for key, value in req_fields.items():
         if not value.strip():
-            return make_response(jsonify({"status": 400, "error": f"{key} cannot be empty"})), 400
+            return make_response(jsonify({"status": 400, "message": f"{key} cannot be empty"})), 400
 
     # check if date is valid(after creation date)
     if validator.validate_meetup_date(happeningOn):
@@ -133,13 +133,13 @@ def meetup_rsvp(meetup_id):
     data, errors = rsvp_schema.load(rsvp_data)
 
     if errors:
-        return make_response(jsonify({"status": 400, "errors": errors})), 400
+        return make_response(jsonify({"status": 400, "message": errors})), 400
 
     res = response.strip().lower()
 
     # check if rsvp exist
     if meetup_models.Meetup().check_rsvp_exists(user_id, meetup_id, response):
-        return make_response(jsonify({"status": 400, "errors": f"already made reservation for {current_user}"})), 400
+        return make_response(jsonify({"status": 400, "message": f"already made reservation for {current_user}"})), 400
 
     if res == "yes" or res == "no" or res == "maybe":
 
@@ -148,7 +148,7 @@ def meetup_rsvp(meetup_id):
 
     return make_response(jsonify({
         "status": 400,
-        "errors": "Invalid response. Input 'yes', 'no', or ''maybe"})), 400
+        "message": "Invalid response. Input 'yes', 'no', or ''maybe"})), 400
 
 
 @meetupbp.route('/meetups/<int:meetup_id>', methods=['DELETE'])

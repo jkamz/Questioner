@@ -30,7 +30,7 @@ def create_question(meetup_id):
 
     data, errors = schema.load(question_data)
     if errors:
-        return make_response(jsonify({"status": 400, "errors": errors})), 400
+        return make_response(jsonify({"status": 400, "message": errors})), 400
 
     new_questionObj = question_models.Questions(meetup_id, title, body, author)
     new_question = new_questionObj.createQuestion()
@@ -53,7 +53,7 @@ def upvote_question(question_id):
     vote = question_models.Questions().upvoteQuestion(question_id, current_user)
 
     if vote == questionexisterror:
-        return jsonify({"status": 400, "data": vote}), 400
+        return jsonify({"status": 400, "message": vote}), 400
 
     return jsonify({"status": 200, "data": vote}), 200
 
@@ -70,6 +70,6 @@ def downvote_question(question_id):
     vote = question_models.Questions().downvoteQuestion(question_id, current_user)
 
     if vote == questionexisterror:
-        return jsonify({"status": 400, "data": vote}), 400
+        return jsonify({"status": 400, "message": vote}), 400
 
     return jsonify({"status": 200, "data": vote}), 200

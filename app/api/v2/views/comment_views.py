@@ -28,7 +28,7 @@ def create_question(question_id):
 
     data, errors = schema.load(comment_data)
     if errors:
-        return make_response(jsonify({"status": 400, "errors": errors})), 400
+        return make_response(jsonify({"status": 400, "message": errors})), 400
 
     new_commentObj = comment_models.Comment(question_id, body, author)
     new_comment = new_commentObj.createComment()

@@ -35,7 +35,7 @@ def sign_up():
     # validate data types and required fields using marshmallow
     data, errors = user_schema.load(user_data)
     if errors:
-        return make_response(jsonify({"status": 400, "errors": errors})), 400
+        return make_response(jsonify({"status": 400, "message": errors})), 400
     else:
 
         req_fields = {"firstname": firstname, "lastname": lastname,
@@ -44,7 +44,7 @@ def sign_up():
         # check if all required values are present
         for key, value in req_fields.items():
             if not value.strip():
-                return make_response(jsonify({"status": 400, "error":
+                return make_response(jsonify({"status": 400, "message":
                                               f"{key} cannot be empty"})), 400
 
         # check pass strength
