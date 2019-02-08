@@ -45,7 +45,7 @@ def create_meetup():
     # validate data types and required fields using marshmallow
     data, errors = meeting_schema.load(meetupdata)
     if errors:
-        return make_response(jsonify({"status": 400, "message": errors})), 400
+        return make_response(jsonify({"status": 422, "message": errors})), 422
 
     req_fields = {"topic": topic, "location": location, "happeningOn": happeningOn}
 
