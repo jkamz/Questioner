@@ -41,6 +41,23 @@ def create_question(meetup_id):
     return jsonify({"status": 201, "data": new_question}), 201
 
 
+@questionbp.route('meetups/<int:meetup_id>/questions', methods=["GET"])
+def get_question(meetup_id):
+    '''
+    endpoint for getting question records for a meetup
+    '''
+
+    questions = question_models.Questions(meetup_id).getQuestions()
+
+    if questions == meetupexisterror:
+        return jsonify({"status": 400, "message": questions}), 400
+
+    return make_response(jsonify({
+        "message": "success",
+        "questions": questions
+    }), 200)
+
+
 @questionbp.route('/questions/<int:question_id>/upvote', methods=["PATCH"])
 @jwt_required
 def upvote_question(question_id):
