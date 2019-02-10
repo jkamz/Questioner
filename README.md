@@ -30,10 +30,12 @@ POST  | /api/v2/meetups/<int:meetup_id>/questions | Create a question
 POST  | /api/v2/questions/<int:question_id>/comments | Create a comment
 PATCH | /api/v2/questions/<int:question_id>/upvote | Adds votes by one |
 PATCH | /api/v2/questions/<int:question_id>/downvote | Decreases votes by one  |
-POST | /api/v2/meetups/<int:meetup_id>/rsvps | Create a RSVP for a specific meetup
-POST  | POST  | /api/v2/meetups/<int:meetup_id>/questions | Create a question./api/v2/signup  | create a new user |
+POST | /api/v2/meetups/<int:meetup_id>/rsvps | Create a RSVP for a specific meetup|
+POST  | /api/v2/meetups/<int:meetup_id>/questions | Create a question|
+GET  | /api/v2/meetups/<int:meetup_id>/questions | Get questions for a given meetup|
+POST  | /api/v2/signup  | create a new user |
 POST  | /api/v2/signin  | login user into the system |
-DELETE  | /api/v2/meetups/<int:meetup_id>  | Get a specific meetup   |
+DELETE  | /api/v2/meetups/<int:meetup_id>  | Delete a specific meetup   |
 
 
 ## Getting Started
