@@ -96,6 +96,21 @@ class Questions():
 
         return question
 
+    def getQuestions(self, meetup_id):
+        '''
+        Method for getting questions for a specific meetup
+        '''
+
+        # first ensure meetup exists
+        if not self.check_meetup_exist():
+            return meetupexisterror
+
+        cur = self.db.cursor(cursor_factory=RealDictCursor)
+        query = """ SELECT * FROM questions WHERE meetup_id = '%s'""" % (meetup_id)
+        cur.execute(query)
+        questions = cur.fetchall()
+        return questions
+
     def upvoteQuestion(self, question_id, username):
         '''
         Method for upvoting a question
