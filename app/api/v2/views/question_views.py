@@ -42,7 +42,7 @@ def create_question(meetup_id):
 
 
 @questionbp.route('meetups/<int:meetup_id>/questions', methods=["GET"])
-def get_question(meetup_id):
+def get_questions(meetup_id):
     '''
     endpoint for getting question records for a meetup
     '''
@@ -55,6 +55,23 @@ def get_question(meetup_id):
     return make_response(jsonify({
         "message": "success",
         "questions": questions
+    }), 200)
+
+
+@questionbp.route('/questions/<int:question_id>', methods=["GET"])
+def get_question(question_id):
+    '''
+    endpoint for getting one question record
+    '''
+
+    question = question_models.Questions().getQuestion(question_id)
+
+    if question == questionexisterror:
+        return jsonify({"status": 400, "message": question}), 400
+
+    return make_response(jsonify({
+        "message": "success",
+        "question": question
     }), 200)
 
 
