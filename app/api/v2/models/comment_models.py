@@ -14,7 +14,7 @@ class Comment():
     define all comment attributes and methods
     """
 
-    def __init__(self, question_id, body, author):
+    def __init__(self, question_id, body=None, author=None):
         '''
         initialize class
         '''

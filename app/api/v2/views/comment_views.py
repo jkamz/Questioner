@@ -13,7 +13,7 @@ commentbp = Blueprint('commentbp', __name__, url_prefix='/api/v2')
 
 
 @commentbp.route('questions/<int:question_id>/comments', methods=["POST"])
-def create_question(question_id):
+def create_comment(question_id):
     '''
     endpoint for creating a question record
     '''
@@ -37,3 +37,20 @@ def create_question(question_id):
         return jsonify({"status": 400, "message": new_comment}), 400
 
     return jsonify({"status": 201, "data": new_comment}), 201
+
+
+@commentbp.route('questions/<int:question_id>/comments', methods=["GET"])
+def get_comments(question_id):
+    '''
+    endpoint for getting comment records for a question
+    '''
+
+    comments = comment_models.Comment(question_id).getComments()
+
+    if comments == questionexisterror:
+        return jsonify({"status": 400, "message": comments}), 400
+
+    return make_response(jsonify({
+        "message": "success",
+        "comments": comments
+    }), 200)
