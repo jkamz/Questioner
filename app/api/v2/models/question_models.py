@@ -113,6 +113,20 @@ class Questions():
 
         return questions
 
+    def getQuestion(self, question_id):
+        '''
+        Method for getting one question
+        '''
+
+        cur = self.db.cursor(cursor_factory=RealDictCursor)
+
+        query = """ SELECT * FROM questions WHERE question_id='{}' """.format(question_id)
+
+        cur.execute(query)
+        question = cur.fetchone()
+
+        return question
+
     def upvoteQuestion(self, question_id, username):
         '''
         Method for upvoting a question
