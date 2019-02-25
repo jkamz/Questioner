@@ -14,7 +14,7 @@ class Comment():
     define all comment attributes and methods
     """
 
-    def __init__(self, question_id, body, author):
+    def __init__(self, question_id, body=None, author=None):
         '''
         initialize class
         '''
@@ -79,3 +79,21 @@ class Comment():
         cur.close()
 
         return comment
+
+    # Get question commments
+
+    def getComments(self):
+        '''
+        Method for getting questions for a specific meetup
+        '''
+
+        # first ensure question exists
+        if not self.check_question_exist():
+            return questionexisterror
+
+        cur = self.db.cursor(cursor_factory=RealDictCursor)
+        query = """ SELECT * FROM comments WHERE question_id = '%s'""" % (self.question_id)
+        cur.execute(query)
+        comments = cur.fetchall()
+
+        return comments
