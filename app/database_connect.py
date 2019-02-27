@@ -73,7 +73,7 @@ def create_table_schemas():
     questions = """ CREATE TABLE IF NOT EXISTS questions (question_id serial PRIMARY KEY NOT NULL,
         meetup_id INTEGER NOT NULL,
         created_on TIMESTAMP NOT NULL DEFAULT current_timestamp,
-        title VARCHAR NOT NULL,
+        title VARCHAR,
         body VARCHAR NOT NULL,
         author VARCHAR (30) NOT NULL,
         votes INTEGER NOT NULL DEFAULT 0);"""

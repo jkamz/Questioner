@@ -45,7 +45,7 @@ class Comment():
 
         cur = self.db.cursor(cursor_factory=RealDictCursor)
 
-        query = """ SELECT comment_id FROM comments WHERE body='{}' AND author='{}' """.format(body, author)
+        query = """ SELECT comment_id FROM comments WHERE question_id='{}' AND body='{}' AND author='{}' """.format(self.question_id, body, author)
 
         cur.execute(query)
         comment = cur.fetchone()
