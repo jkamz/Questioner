@@ -42,13 +42,12 @@ class Questions():
 
     def check_question_exist(self):
         """check if question is already in db"""
-        title = self.title
         body = self.body
         author = self.author
 
         cur = self.db.cursor(cursor_factory=RealDictCursor)
 
-        query = """ SELECT question_id FROM questions WHERE title='{}' AND body='{}' AND author='{}' """.format(title, body, author)
+        query = """ SELECT question_id FROM questions WHERE meetup_id='{}' AND body='{}' AND author='{}' """.format(self.meetup_id, body, author)
 
         cur.execute(query)
         question = cur.fetchone()
