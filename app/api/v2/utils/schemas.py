@@ -29,7 +29,6 @@ class RsvpSchema(Schema):
 
 
 class QuestionsSchema(Schema):
-    title = fields.String(required=True, validate=(not_blank, min_length))
     body = fields.String(required=True, validate=(not_blank, min_length))
     author = fields.String(required=True, validate=(not_blank, min_length))
 
