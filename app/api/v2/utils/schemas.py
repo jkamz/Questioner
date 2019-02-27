@@ -34,4 +34,3 @@ class QuestionsSchema(Schema):
 
 class CommentsSchema(Schema):
     body = fields.String(required=True, validate=(not_blank, min_length))
-    author = fields.String(required=True, validate=(not_blank, min_length))
