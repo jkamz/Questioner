@@ -111,7 +111,7 @@ class QuestionTest(unittest.TestCase):
 
         # post question
         res = self.client.post("api/v2/meetups/1/questions", data=json.dumps(self.question),
-                               content_type="application/json")
+                               headers=self.headers)
 
         response_data = json.loads(res.data.decode())
 
@@ -125,7 +125,7 @@ class QuestionTest(unittest.TestCase):
         self.register_and_login_user()
 
         res = self.client.post("api/v2/meetups/1/questions", data=json.dumps(self.empty),
-                               content_type="application/json")
+                               headers=self.headers)
 
         response_data = json.loads(res.data.decode())
         self.assertEqual(res.status_code, 400)
@@ -146,11 +146,11 @@ class QuestionTest(unittest.TestCase):
 
         # post question
         res = self.client.post("api/v2/meetups/1/questions", data=json.dumps(self.question),
-                               content_type="application/json")
+                               headers=self.headers)
 
         # post comment
         res = self.client.post("api/v2/questions/1/comments", data=json.dumps(self.comment),
-                               content_type="application/json")
+                               headers=self.headers)
 
         response_data = json.loads(res.data.decode())
 
@@ -165,11 +165,11 @@ class QuestionTest(unittest.TestCase):
 
         # create question
         res = self.client.post("api/v2/meetups/1/questions", data=json.dumps(self.empty),
-                               content_type="application/json")
+                               headers=self.headers)
 
         # create comment
         res = self.client.post("api/v2/questions/1/comments", data=json.dumps(self.empty),
-                               content_type="application/json")
+                               headers=self.headers)
 
         response_data = json.loads(res.data.decode())
         self.assertEqual(res.status_code, 400)
