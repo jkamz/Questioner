@@ -30,7 +30,6 @@ class RsvpSchema(Schema):
 
 class QuestionsSchema(Schema):
     body = fields.String(required=True, validate=(not_blank, min_length))
-    author = fields.String(required=True, validate=(not_blank, min_length))
 
 
 class CommentsSchema(Schema):
