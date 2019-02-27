@@ -2,6 +2,7 @@
 Create views for all questions endpoints
 """
 from flask import request, Blueprint, jsonify, make_response
+from flask_jwt_extended import get_jwt_identity, jwt_required
 
 from ..models import comment_models
 from ..utils.schemas import CommentsSchema
@@ -13,6 +14,7 @@ commentbp = Blueprint('commentbp', __name__, url_prefix='/api/v2')
 
 
 @commentbp.route('questions/<int:question_id>/comments', methods=["POST"])
+@jwt_required
 def create_comment(question_id):
     '''
     endpoint for creating a question record
