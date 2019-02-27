@@ -20,13 +20,15 @@ def create_comment(question_id):
     endpoint for creating a question record
     '''
 
+    current_user = get_jwt_identity()
+
     comment_data = request.get_json()
 
     if not comment_data:
         return jsonify({"status": 400, "message": "expects only Application/JSON data"}), 400
 
     body = comment_data.get('body')
-    author = comment_data.get('author')
+    author = current_user
 
     data, errors = schema.load(comment_data)
     if errors:
