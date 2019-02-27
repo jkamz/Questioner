@@ -14,10 +14,12 @@ questionbp = Blueprint('questionbp', __name__, url_prefix='/api/v2')
 
 
 @questionbp.route('meetups/<int:meetup_id>/questions', methods=["POST"])
+@jwt_required
 def create_question(meetup_id):
     '''
     endpoint for creating a question record
     '''
+    current_user = get_jwt_identity()
 
     question_data = request.get_json()
 
@@ -26,7 +28,7 @@ def create_question(meetup_id):
 
     title = question_data.get('title')
     body = question_data.get('body')
-    author = question_data.get('author')
+    author = current_user
 
     data, errors = schema.load(question_data)
     if errors:
