@@ -145,27 +145,45 @@ class Questions():
         and question_id = '{}';""".format(username, question_id)
 
         cur.execute(query_delete_vote)
+        self.db.commit()
+        cur.close()
+
+        # delete vote from upvotes table if exist
+        query_delete_upvote = """DELETE FROM upvotes WHERE username = '{}'
+        and question_id = '{}';""".format(username, question_id)
 
         # check if upvote exists
         query_check_vote = """ SELECT * FROM upvotes WHERE question_id = '%s'
         AND username = '%s' """ % (question_id, username)
 
+        cur = self.db.cursor(cursor_factory=RealDictCursor)
         cur.execute(query_check_vote)
         vote = cur.fetchone()
+        self.db.commit()
+        cur.close()
+
         if vote:
-            return {"status": 400, "message": "Already voted"}
+            cur = self.db.cursor(cursor_factory=RealDictCursor)
+            cur.execute(query_delete_upvote)
+            self.db.commit()
+            cur.close()
+            return {"message": "removed upvote successfully"}
 
         # add upvote to question table
         query_upvote = """ UPDATE questions SET votes = votes+1 WHERE
         question_id = {} RETURNING * """.format(
             question_id)
 
+        cur = self.db.cursor(cursor_factory=RealDictCursor)
         cur.execute(query_upvote)
         question = cur.fetchone()
+        self.db.commit()
+        cur.close()
 
         # add vote to upvotes table
         query = """ INSERT INTO upvotes (question_id, username) VALUES (%s, %s) """
 
+        cur = self.db.cursor(cursor_factory=RealDictCursor)
         cur.execute(query, (question_id, username))
         self.db.commit()
         cur.close()
