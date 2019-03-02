@@ -129,6 +129,16 @@ class Questions():
 
         return question
 
+    def cursorOps(self, query):
+        '''
+        Method to open, execute, and close cursor
+        '''
+
+        cur = self.db.cursor(cursor_factory=RealDictCursor)
+        cur.execute(query)
+        self.db.commit()
+        cur.close()
+
     def upvoteQuestion(self, question_id, username):
         '''
         Method for upvoting a question
@@ -138,17 +148,17 @@ class Questions():
         if not self.get_question_by_id(question_id):
             return questionexisterror
 
-        cur = self.db.cursor(cursor_factory=RealDictCursor)
-
         # delete vote from downvotes table if exist
         query_delete_vote = """DELETE FROM downvotes WHERE username = '{}'
         and question_id = '{}';""".format(username, question_id)
 
-        cur.execute(query_delete_vote)
-        self.db.commit()
-        cur.close()
+        # cur = self.db.cursor(cursor_factory=RealDictCursor)
+        # cur.execute(query_delete_vote)
+        # self.db.commit()
+        # cur.close()
+        self.cursorOps(query_delete_vote)
 
-        # delete vote from upvotes table if exist
+        # query to delete vote from upvotes table if exists
         query_delete_upvote = """DELETE FROM upvotes WHERE username = '{}'
         and question_id = '{}';""".format(username, question_id)
 
@@ -163,10 +173,11 @@ class Questions():
         cur.close()
 
         if vote:
-            cur = self.db.cursor(cursor_factory=RealDictCursor)
-            cur.execute(query_delete_upvote)
-            self.db.commit()
-            cur.close()
+            # cur = self.db.cursor(cursor_factory=RealDictCursor)
+            # cur.execute(query_delete_upvote)
+            # self.db.commit()
+            # cur.close()
+            self.cursorOps(query_delete_upvote)
             return {"message": "removed upvote successfully"}
 
         # add upvote to question table
