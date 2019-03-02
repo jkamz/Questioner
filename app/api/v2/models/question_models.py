@@ -148,24 +148,46 @@ class Questions():
         if not self.get_question_by_id(question_id):
             return questionexisterror
 
-        # delete vote from downvotes table if exist
-        query_delete_vote = """DELETE FROM downvotes WHERE username = '{}'
+        # query to delete vote from downvotes table if exist
+        query_delete_downvote = """DELETE FROM downvotes WHERE username = '{}'
         and question_id = '{}';""".format(username, question_id)
 
-        # cur = self.db.cursor(cursor_factory=RealDictCursor)
-        # cur.execute(query_delete_vote)
-        # self.db.commit()
-        # cur.close()
-        self.cursorOps(query_delete_vote)
+        # query to add vote to questions table
+        query_upvote = """ UPDATE questions SET votes = votes+1 WHERE
+        question_id = {} RETURNING * """.format(
+            question_id)
+
+        # query to check if downvote exists in downvote table
+        query_check_downvote = """ SELECT * FROM downvotes WHERE question_id = '%s'
+        AND username = '%s' """ % (question_id, username)
+
+        # If there is a downvote, remove it and add question votes by 1
+        cur = self.db.cursor(cursor_factory=RealDictCursor)
+        cur.execute(query_check_downvote)
+        downvote = cur.fetchone()
+        self.db.commit()
+        cur.close()
+
+        if downvote:
+            self.cursorOps(query_delete_downvote)
+            self.cursorOps(query_upvote)
+        else:
+            pass
 
         # query to delete vote from upvotes table if exists
         query_delete_upvote = """DELETE FROM upvotes WHERE username = '{}'
         and question_id = '{}';""".format(username, question_id)
 
-        # check if upvote exists
+        # query to decrease vote from question table
+        query_downvote = """ UPDATE questions SET votes = votes-1 WHERE
+        question_id = {} RETURNING * """.format(
+            question_id)
+
+        # query to check check if upvote exists
         query_check_vote = """ SELECT * FROM upvotes WHERE question_id = '%s'
         AND username = '%s' """ % (question_id, username)
 
+        # if there is an upvote, remove it and decrese votes by one
         cur = self.db.cursor(cursor_factory=RealDictCursor)
         cur.execute(query_check_vote)
         vote = cur.fetchone()
@@ -173,18 +195,11 @@ class Questions():
         cur.close()
 
         if vote:
-            # cur = self.db.cursor(cursor_factory=RealDictCursor)
-            # cur.execute(query_delete_upvote)
-            # self.db.commit()
-            # cur.close()
             self.cursorOps(query_delete_upvote)
-            return {"message": "removed upvote successfully"}
+            self.cursorOps(query_downvote)
+            return vote, {"message": "removed upvote successfully"}
 
         # add upvote to question table
-        query_upvote = """ UPDATE questions SET votes = votes+1 WHERE
-        question_id = {} RETURNING * """.format(
-            question_id)
-
         cur = self.db.cursor(cursor_factory=RealDictCursor)
         cur.execute(query_upvote)
         question = cur.fetchone()
