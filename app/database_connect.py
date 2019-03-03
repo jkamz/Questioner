@@ -121,7 +121,7 @@ def add_admin():
                     phoneNumber, username,password, isAdmin) VALUES (
                     %s,%s,%s,%s,%s,%s,%s) RETURNING user_id, email, username, isAdmin;"""
 
-            pass_hashed = generate_password_hash("Jkamz6432@")
+            pass_hashed = generate_password_hash("123456789")
 
             data = ('super', 'user', 'admin@admin.com', '+254705107566', 'admin', pass_hashed, 'TRUE')
 
