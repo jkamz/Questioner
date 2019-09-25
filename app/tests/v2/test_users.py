@@ -30,7 +30,7 @@ class TestUser(unittest.TestCase):
             "email": "andeelapac@pac.com",
             "phoneNumber": "+254705107566",
             "username": "andech",
-            "password": "Jkamz6432@"
+            "password": "ABCD1234@"
         }
 
         self.user2 = {
@@ -39,14 +39,14 @@ class TestUser(unittest.TestCase):
             "email": "andelapac2@pac.com",
             "phoneNumber": "+254705107566",
             "username": "andech2",
-            "password": "Jkamz6432@"
+            "password": "ABCD1234@"
         }
 
         self.user1 = {
         }
         self.userlogin = {
             "username": "andech",
-            "password": "Jkamz6432@"
+            "password": "ABCD1234@"
         }
 
     def test_user_sign_up(self):

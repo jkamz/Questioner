@@ -27,12 +27,12 @@ class QuestionTest(unittest.TestCase):
             "email": "andeelapac@pac.com",
             "phoneNumber": "+254705107566",
             "username": "andech",
-            "password": "Jkamz6432@"
+            "password": "ABCD1234@"
         }
 
         self.userlogin = {
             "username": "andech",
-            "password": "Jkamz6432@"
+            "password": "ABCD1234@"
         }
 
         self.question = {
@@ -56,7 +56,7 @@ class QuestionTest(unittest.TestCase):
 
         self.adminlogin = {
             "username": "admin",
-            "password": "Jkamz6432@"
+            "password": "123456789"
         }
 
         self.empty = {}

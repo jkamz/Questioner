@@ -10,7 +10,7 @@ class Config(object):
     DEBUG = False
     SECRET = os.getenv('SECRET')
     # DATABASE_URI = os.getenv('DATABASE_URL')
-    POSTGRES_USER = "postgres"
+    POSTGRES_USER = "jkamz"
     POSTGRES_PASSWORD = os.getenv('POSTGRES_PASSWORD')
     POSTGRES_DB = "questioner"
     POSTGRES_HOST = "localhost"

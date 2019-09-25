@@ -25,17 +25,17 @@ class MeetupTest(unittest.TestCase):
             "email": "andeelapac@pac.com",
             "phoneNumber": "+254705107566",
             "username": "andech",
-            "password": "Jkamz6432@"
+            "password": "ABCD1234@"
         }
 
         self.userlogin = {
             "username": "andech",
-            "password": "Jkamz6432@"
+            "password": "ABCD1234@"
         }
 
         self.adminlogin = {
             "username": "admin",
-            "password": "Jkamz6432@"
+            "password": "123456789"
         }
 
         self.meetup = {
@@ -88,6 +88,7 @@ class MeetupTest(unittest.TestCase):
                                 content_type="application/json")
 
         response_data = json.loads(res1.data.decode())
+        # import pdb; pdb.set_trace()
         token = response_data["access_token"]
 
         self.headers = {
