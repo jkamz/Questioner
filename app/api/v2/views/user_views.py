@@ -20,9 +20,14 @@ def sign_up():
     '''endpoint for adding a user
     '''
     user_data = request.get_json()
+    # import pdb; pdb.set_trace()
     if not user_data:
-
         return jsonify({"status": 400, "message": "expects only Application/JSON data"}), 400
+
+    # remove leading and trailing whitespace
+    for k,v in user_data.items():
+        if type(v) is str: user_data[k] = v.strip()
+
 
     firstname = user_data.get('firstname')
     lastname = user_data.get('lastname')
@@ -32,39 +37,35 @@ def sign_up():
     password = user_data.get('password')
     isAdmin = False
 
-    # validate data types and required fields using marshmallow
+    try:
+        validate_sign_up(user_data, password, phoneNumber)
+    except ValueError as errors:
+        return make_response(jsonify({"status": 400, "error": errors.args})), 400
+
+    # hash password
+    password = generate_password_hash(password)
+
+    userObj = User(email, username, password, firstname, lastname, phoneNumber, isAdmin)
+    new_user = userObj.signUp()
+
+    if new_user == usernameerror or new_user == emailerror:
+        return jsonify({"status": 400, "message": new_user}), 400
+
+    return jsonify({"status": 201, "data": new_user}), 201
+
+def validate_sign_up(user_data, password, phoneNumber):
+    '''validations for user sign in
+    '''
     data, errors = user_schema.load(user_data)
+
     if errors:
-        return make_response(jsonify({"status": 400, "message": errors})), 400
-    else:
+        raise ValueError(errors)
 
-        req_fields = {"firstname": firstname, "lastname": lastname,
-                      "username": username, "email": email, "password": password}
+    if not validator.validate_password_strength(password):
+        raise ValueError(passworderror)
 
-        # check if all required values are present
-        for key, value in req_fields.items():
-            if not value.strip():
-                return make_response(jsonify({"status": 400, "message":
-                                              f"{key} cannot be empty"})), 400
-
-        # check pass strength
-        if not validator.validate_password_strength(password):
-            return make_response(jsonify(passworderror))
-
-        # check phone number validity
-        if not validator.validate_phone_numbers(phoneNumber):
-            return make_response(jsonify(phonenumbererror))
-
-        # hash password
-        password = generate_password_hash(password)
-
-        userObj = User(email, username, password, firstname, lastname, phoneNumber, isAdmin)
-        new_user = userObj.signUp()
-
-        if new_user == usernameerror or new_user == emailerror:
-            return jsonify({"status": 400, "message": new_user}), 400
-
-        return jsonify({"status": 201, "data": new_user}), 201
+    if not validator.validate_phone_numbers(phoneNumber):
+        raise ValueError(phonenumbererror)
 
 
 @auth.route('/signin', methods=['POST'])

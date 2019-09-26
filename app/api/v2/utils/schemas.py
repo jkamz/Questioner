@@ -6,14 +6,18 @@ max_length = validate.Length(max=20)
 min_length = validate.Length(min=4)
 
 
+
 class UsersSchema(Schema):
 
-    firstname = fields.String(required=True, validate=(not_blank, max_length))
-    lastname = fields.String(required=True, validate=(not_blank, max_length))
-    username = fields.String(required=True, validate=(not_blank, max_length, min_length))
-    email = fields.Email(required=True)
-    phoneNumber = fields.String(required=True)
-    password = fields.String(required=True)
+    firstname = fields.String(required=True, validate=(not_blank, max_length),
+        error_messages={"required": "First Name is required."})
+    lastname = fields.String(required=True, validate=(not_blank, max_length),
+        error_messages={"required": "Last Name is required."})
+    username = fields.String(required=True, validate=(not_blank, max_length, min_length),
+        error_messages={"required": "User Name is required."})
+    email = fields.Email(required=True,  error_messages={"required": "Email is required."})
+    phoneNumber = fields.String(required=True,  error_messages={"required": "Phone Number is required."})
+    password = fields.String(required=True,  error_messages={"required": "password is required."})
     isAdmin = fields.Boolean()
 
 
