@@ -47,12 +47,12 @@ def sign_up():
 
     userObj = User(email, username, password, firstname,
                    lastname, phoneNumber, isAdmin)
-    new_user = userObj.signUp()
+    user = userObj.signUp()
 
-    if new_user == usernameerror or new_user == emailerror:
-        return jsonify({"status": 400, "message": new_user}), 400
+    if user == usernameerror or user == emailerror:
+        return jsonify({"status": 400, "message": user}), 400
 
-    return jsonify({"status": 201, "data": new_user}), 201
+    return jsonify({"status": 201, "data": user}), 201
 
 
 def validate_sign_up(user_data, password, phoneNumber):

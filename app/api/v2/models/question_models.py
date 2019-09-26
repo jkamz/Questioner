@@ -179,9 +179,9 @@ class Questions():
         cur.close()
 
         if downvote:
-            self.del_dwv_and_vote(queries)
-            # self.cursorOps(queries['query_delete_downvote'])
-            # self.cursorOps(queries['query_upvote'])
+            self.run_queries(
+                queries['query_delete_downvote'], queries['query_upvote'])
+
         else:
             pass
 
@@ -193,7 +193,8 @@ class Questions():
         cur.close()
 
         if vote:
-            self.del_upv_and_dwv(queries)
+            self.run_queries(
+                queries['query_delete_upvote'], queries['query_downvote'])
             return vote, {"message": "removed upvote successfully"}
 
         # add upvote to question table
@@ -228,7 +229,8 @@ class Questions():
         cur.close()
 
         if upvote:
-            self.del_upv_and_dwv(queries)
+            self.run_queries(
+                queries['query_delete_upvote'], queries['query_downvote'])
         else:
             pass
 
@@ -240,7 +242,8 @@ class Questions():
         cur.close()
 
         if vote:
-            self.del_dwv_and_vote(queries)
+            self.run_queries(
+                queries['query_delete_downvote'], queries['query_upvote'])
             return vote, {"message": "removed downvote successfully"}
 
         # add downvote to question table
@@ -260,10 +263,6 @@ class Questions():
 
         return question, {"message": "downvote successful"}
 
-    def del_dwv_and_vote(self, queries):
-        self.cursorOps(queries['query_delete_downvote'])
-        self.cursorOps(queries['query_upvote'])
-
-    def del_upv_and_dwv(self, queries):
-        self.cursorOps(queries['query_delete_upvote'])
-        self.cursorOps(queries['query_downvote'])
+    def run_queries(self, key1, key2):
+        self.cursorOps(key1)
+        self.cursorOps(key2)
