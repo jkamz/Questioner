@@ -214,10 +214,8 @@ class Questions():
         return question, {"message": "upvote successful"}
 
     def downvoteQuestion(self, question_id, username):
-        '''
-        Method for upvoting a question
-        '''
-        if not self.get_question_by_id(question_id):
+
+        if self.getQuestion(question_id) == questionexisterror:
             return questionexisterror
 
         queries = self.queries(question_id, username)
