@@ -25,9 +25,9 @@ def sign_up():
         return jsonify({"status": 400, "message": "expects only Application/JSON data"}), 400
 
     # remove leading and trailing whitespace
-    for k,v in user_data.items():
-        if type(v) is str: user_data[k] = v.strip()
-
+    for k, v in user_data.items():
+        if hasattr(v, 'strip'):
+            user_data[k] = v.strip()
 
     firstname = user_data.get('firstname')
     lastname = user_data.get('lastname')
@@ -45,13 +45,15 @@ def sign_up():
     # hash password
     password = generate_password_hash(password)
 
-    userObj = User(email, username, password, firstname, lastname, phoneNumber, isAdmin)
+    userObj = User(email, username, password, firstname,
+                   lastname, phoneNumber, isAdmin)
     new_user = userObj.signUp()
 
     if new_user == usernameerror or new_user == emailerror:
         return jsonify({"status": 400, "message": new_user}), 400
 
     return jsonify({"status": 201, "data": new_user}), 201
+
 
 def validate_sign_up(user_data, password, phoneNumber):
     '''validations for user sign in
