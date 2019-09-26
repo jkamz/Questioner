@@ -36,38 +36,43 @@ def create_meetup():
     if not meetupdata:
         return jsonify({"status": 400, "message": "expects only Application/JSON data"}), 400
 
+    for k, v in meetupdata.items():
+        if hasattr(v, 'strip'):
+            meetupdata[k] = v.strip()
+
     topic = meetupdata.get('topic')
     summary = meetupdata.get('summary')
     host = meetupdata.get('host')
     location = meetupdata.get('location')
     happeningOn = meetupdata.get('happeningOn')
 
-    # validate data types and required fields using marshmallow
-    data, errors = meeting_schema.load(meetupdata)
-    if errors:
-        return make_response(jsonify({"status": 422, "message": errors})), 422
+    # validate data types and required fields
+    try:
+        validate_meetup_data(meetupdata, happeningOn)
+    except ValueError as errors:
+        return make_response(jsonify({"status": 400, "error": errors.args})), 400
 
-    req_fields = {"topic": topic, "location": location, "happeningOn": happeningOn}
+    new_meetupObj = meetup_models.Meetup(
+        happeningOn, host, topic, summary, location)
 
-    # check if all required values are present
-    for key, value in req_fields.items():
-        if not value.strip():
-            return make_response(jsonify({"status": 400, "message": f"{key} cannot be empty"})), 400
-
-    # check if date is valid(after creation date)
-    if validator.validate_meetup_date(happeningOn):
-        return make_response(jsonify({
-            "status": 400,
-            "message": "Happening on date cannot be before today"
-        })), 400
-
-    new_meetupObj = meetup_models.Meetup(happeningOn, host, topic, summary, location)
-    new_meetup = new_meetupObj.createMeetup()
-
-    if new_meetup == meetuperror:
-        return jsonify({"status": 400, "message": new_meetup}), 400
+    try:
+        new_meetup = new_meetupObj.createMeetup()
+    except FileExistsError as error:
+        return jsonify({"status": 400, "error": error.args}), 400
 
     return jsonify({"status": 201, "data": new_meetup})
+
+
+def validate_meetup_data(meetupdata, happeningOn):
+    '''validations for creating meetup
+    '''
+    data, errors = meeting_schema.load(meetupdata)
+
+    if errors:
+        raise ValueError(errors)
+
+    if validator.validate_meetup_date(happeningOn):
+        raise ValueError("Happening on date cannot be before today")
 
 
 @meetupbp.route('/meetups/<int:meetupId>')
@@ -143,7 +148,8 @@ def meetup_rsvp(meetup_id):
 
     if res == "yes" or res == "no" or res == "maybe":
 
-        rsvp = meetup_models.Meetup().meetupRsvp(meetup_id, user_id, response, current_user)
+        rsvp = meetup_models.Meetup().meetupRsvp(
+            meetup_id, user_id, response, current_user)
         return jsonify({"status": 200, "data": rsvp})
 
     return make_response(jsonify({
