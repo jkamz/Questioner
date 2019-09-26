@@ -35,10 +35,11 @@ def create_question(meetup_id):
         return make_response(jsonify({"status": 400, "message": errors})), 400
 
     new_questionObj = question_models.Questions(meetup_id, title, body, author)
+
     try:
         new_question = new_questionObj.createQuestion()
-    except FileExistsError as error:
-        return jsonify({"status": 400, "error": error.args}), 400
+    except FileExistsError as err:
+        return make_response(jsonify({"error": err.args, "status": 400}), 400)
 
     return jsonify({"status": 201, "data": new_question}), 201
 
