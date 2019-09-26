@@ -88,7 +88,6 @@ class MeetupTest(unittest.TestCase):
                                 content_type="application/json")
 
         response_data = json.loads(res1.data.decode())
-        # import pdb; pdb.set_trace()
         token = response_data["access_token"]
 
         self.headers = {
@@ -104,7 +103,8 @@ class MeetupTest(unittest.TestCase):
         # login admin
         self.login_admin()
 
-        res = self.client.post("api/v2/meetups", data=json.dumps(self.meetup), headers=self.headers)
+        res = self.client.post(
+            "api/v2/meetups", data=json.dumps(self.meetup), headers=self.headers)
         response_data = json.loads(res.data.decode())
         self.assertEqual(res.status_code, 200)
         self.assertTrue(response_data["data"])
@@ -115,7 +115,8 @@ class MeetupTest(unittest.TestCase):
         # login admin
         self.login_admin()
 
-        res = self.client.post("api/v2/meetups", data=json.dumps(self.empty), headers=self.headers)
+        res = self.client.post(
+            "api/v2/meetups", data=json.dumps(self.empty), headers=self.headers)
 
         response_data = json.loads(res.data.decode())
         self.assertEqual(res.status_code, 400)
@@ -128,7 +129,8 @@ class MeetupTest(unittest.TestCase):
         self.login_admin()
 
         # post/ create a meetup
-        res = self.client.post("api/v2/meetups", data=json.dumps(self.meetup2), headers=self.headers)
+        res = self.client.post(
+            "api/v2/meetups", data=json.dumps(self.meetup2), headers=self.headers)
         self.assertEqual(res.status_code, 200)
 
         # get one meetup by id

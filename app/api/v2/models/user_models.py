@@ -49,7 +49,8 @@ class User():
         """
         username = self.username
         cur = self.db.cursor(cursor_factory=RealDictCursor)
-        query1 = """ SELECT username FROM users WHERE username = '%s'""" % (username)
+        query1 = """ SELECT username FROM users WHERE username = '%s'""" % (
+            username)
 
         cur.execute(query1)
         user = cur.fetchone()
@@ -68,11 +69,11 @@ class User():
 
         # first check if username is available
         if self.check_username_exist():
-            return usernameerror
+            raise NameError(usernameerror)
 
         # check if email is taken
         if self.check_email_exist():
-            return emailerror
+            raise NameError(emailerror)
 
         # create user
         query = """ INSERT INTO users (firstname, lastname, email,
@@ -100,7 +101,8 @@ class User():
         '''
         cur = self.db.cursor(cursor_factory=RealDictCursor)
 
-        query = """ SELECT isAdmin, password, username FROM users WHERE username = '%s'""" % (username)
+        query = """ SELECT isAdmin, password, username FROM users WHERE username = '%s'""" % (
+            username)
 
         cur.execute(query)
         user = cur.fetchone()

@@ -20,7 +20,6 @@ def sign_up():
     '''endpoint for adding a user
     '''
     user_data = request.get_json()
-    # import pdb; pdb.set_trace()
     if not user_data:
         return jsonify({"status": 400, "message": "expects only Application/JSON data"}), 400
 
@@ -47,10 +46,11 @@ def sign_up():
 
     userObj = User(email, username, password, firstname,
                    lastname, phoneNumber, isAdmin)
-    user = userObj.signUp()
 
-    if user == usernameerror or user == emailerror:
-        return jsonify({"status": 400, "message": user}), 400
+    try:
+        user = userObj.signUp()
+    except NameError as error:
+        return jsonify({"status": 400, "message": error.args}), 400
 
     return jsonify({"status": 201, "data": user}), 201
 

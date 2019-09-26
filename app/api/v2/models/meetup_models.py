@@ -29,7 +29,8 @@ class Meetup():
     def check_user_status(self, username):
         """check if user is admin"""
         cur = self.db.cursor(cursor_factory=RealDictCursor)
-        query1 = """ SELECT isAdmin FROM users WHERE username = '%s'""" % (username)
+        query1 = """ SELECT isAdmin FROM users WHERE username = '%s'""" % (
+            username)
 
         cur.execute(query1)
         user = cur.fetchone()
@@ -85,7 +86,7 @@ class Meetup():
 
         # first check if meetup exists
         if self.check_meetup_exists():
-            return meetuperror
+            raise FileExistsError(meetuperror)
 
         query = """INSERT INTO meetups (created_on, happeningOn, host, topic,
         summary, location) VALUES (%s, %s, %s, %s, %s, %s)
@@ -106,7 +107,8 @@ class Meetup():
         '''
         cur = self.db.cursor(cursor_factory=RealDictCursor)
 
-        query = " SELECT * FROM meetups WHERE meetup_id = '{}'".format(meetup_id)
+        query = " SELECT * FROM meetups WHERE meetup_id = '{}'".format(
+            meetup_id)
 
         cur.execute(query)
         meetup = cur.fetchone()

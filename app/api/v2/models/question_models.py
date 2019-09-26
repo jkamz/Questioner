@@ -78,11 +78,11 @@ class Questions():
 
         # first ensure meetup exists
         if not self.check_meetup_exist():
-            return meetupexisterror
+            raise FileExistsError(meetupexisterror)
 
         # check if comment is duplicate
         if self.check_question_exist():
-            return questionerror
+            raise FileExistsError(questionerror)
 
         cur = self.db.cursor(cursor_factory=RealDictCursor)
 

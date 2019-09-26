@@ -54,10 +54,11 @@ def create_meetup():
 
     new_meetupObj = meetup_models.Meetup(
         happeningOn, host, topic, summary, location)
-    new_meetup = new_meetupObj.createMeetup()
 
-    if new_meetup == meetuperror:
-        return jsonify({"status": 400, "message": new_meetup}), 400
+    try:
+        new_meetup = new_meetupObj.createMeetup()
+    except FileExistsError as error:
+        return jsonify({"status": 400, "error": error.args}), 400
 
     return jsonify({"status": 201, "data": new_meetup})
 
